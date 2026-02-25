@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@layer base {
+
+  body {
+    @apply 
+	flex 
+	m-0 
+	min-h-screen 
+	bg-gray-100;
+  }
+  header {
+	@apply 
+	sticky 
+	flex 
+	z-10
+	top-0 
+	bg-slate-900 
+	h-24
+	px-4 
+	sm:px-6 
+	lg:px-8 
+	items-center
+  /* premium icon */
+  mb-13;
+  }
+  footer {
+	@apply bg-slate-900 ;
+  }
+  h2 {
+	@apply font-bold;
+  }
+}
+
+@layer components {
+  #root {
+	@apply flex flex-1 flex-col bg-gray-100 ;
+  }
+  .container {
+	@apply 
+	flex-1 
+	grid 
+	grid-cols-[repeat(auto-fit,minmax(300px,1fr))] 
+	gap-3 
+	p-4 
+	py-3 
+	mx-auto ;
+  }
+  .premium-icon {
+  @apply absolute bottom-0 left-0 top-24 w-full h-13 bg-yellow-500 flex items-center justify-between px-4 sm:px-6 lg:px-8  text-white font-bold mb-13;
+  }
+  .quiz-form {
+	@apply flex flex-col lg:mx-28 bg-white shadow-md rounded-lg p-4;
+  }
+  .quiz-card {
+	@apply flex flex-col bg-white shadow-md rounded-lg p-4;
+  }
+  .toolbar {
+	@apply flex ml-auto mr-13 gap-14;
+  }
+  .button {
+	@apply bg-sky-500 hover:bg-sky-300 text-white px-4 py-2 rounded-[5px] font-bold;
+  }
+  .question-form {
+	@apply flex flex-col bg-slate-200 gap-4 py-10 rounded px-4 items-center;
+  }
+  .input-field {
+	@apply flex gap-4 w-full items-center;
+  }
+  .input{
+	@apply border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent font-bold;
+  }
+  .option {
+	@apply border border-gray-300 rounded-md px-3 py-2 w-fit focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent font-bold;
+  }
+  .label {
+	@apply font-bold flex w-fit items-center;
+  }
+  .textarea {
+	@apply border border-gray-300 rounded-md px-3 py-2 w-full h-32 resize-none focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent;
+  }
+  .icon {
+	@apply h-full;
+  }
+
+  /* PlayQuiz styles */
+  .quiz-title {
+	@apply text-3xl font-bold mb-4;
+  }
+  .quiz-description {
+	@apply mb-6;
+  }
+  .quiz-count {
+	@apply text-lg font-semibold ml-auto;
+  }
+  /* log-in */
+  .log-in {
+	@apply flex flex-col gap-7 my-10 sm:w-112.5 mx-auto max-sm:w-full h-fit bg-white shadow-md rounded-lg py-8 px-10;
+  }
+  .log-in-title {
+	@apply text-3xl font-black mb-4;	
+  }
+}
+
+
+
+
+
+
