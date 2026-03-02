@@ -32,7 +32,7 @@ function Header() {
       <img src={menuIcon} alt="menu" className="button ml-auto" onClick={Open}/>}
 
       <MobileMenu isOpen={isOpen} Close={Close}/>
-      <PremiumIcon endDate={new Date('2026-02-20T01:34:19Z').getTime()} />
+      <PremiumIcon endDate={new Date('2026-03-06T01:34:19Z').getTime()} />
 		</header>
     </>
   )

@@ -31,9 +31,9 @@ export function* timerGenerator(endDate) {
     try{
     while(true) {
         const timeLeftMS = endDate - Date.now();
-        const timeLeft = TimeConventer(timeLeftMS);
+        const timeLeft = timeConventer(timeLeftMS);
         
-        if (timeLeftMS <= 0) return TimeConventer(0);
+        if (timeLeftMS <= 0) return timeConventer(0);
         //12378589
 
         yield timeLeft;

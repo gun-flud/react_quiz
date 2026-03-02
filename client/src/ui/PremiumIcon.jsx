@@ -3,7 +3,7 @@ import { timerGenerator } from "../logic/timerGenerator";
 
 import closeIcon from "../assets/close-icon.svg";
 
-function PremiumIcon({ endDate = new Date("2026-02-19T01:34:19Z").getTime() }) {
+function PremiumIcon({ endDate = new Date("2026-03-06T01:34:19Z").getTime() }) {
     const TimerRef = useRef(timerGenerator(endDate));
     const [counter, setCounter] = useState(() => {
         return TimerRef.current.next().value;
