@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useId } from 'react'
 import { useParams } from 'react-router';
-import QuizEditForm from '../ui/QuizEditForm.jsx';
-import QuizCreateForm from '../ui/QuizCreateForm.jsx';
-import PlayQuiz from '../ui/PlayQuiz.jsx';
+import QuizEditForm from '../components/ui/QuizEditForm.jsx';
+import QuizCreateForm from '../components/ui/QuizCreateForm.jsx';
+import PlayQuiz from '../components/ui/PlayQuiz.jsx';
 
 
 function Play() {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import QuizList from '../ui/QuizList.jsx'; 
+import QuizList from '../components/ui/QuizList.jsx'; 
 import { useQuizzes } from '../features/quizzes/quiz.context.jsx';
 
 import plusIcon from '../assets/icons/plus-icon.png';
