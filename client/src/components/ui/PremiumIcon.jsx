@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { timerGenerator } from "@/logic/timerGenerator";
+import { timerGenerator } from "@/utils/timerGenerator";
 
 import closeIcon from "@/assets/icons/close-icon.svg";
 

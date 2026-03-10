@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router'
 import { useNavigate } from 'react-router'
 
-import menuIcon from '../assets/icons/menu-icon.svg'
+import menuIcon from '@/assets/icons/menu-icon.svg'
 
 
 function MobileMenu ({ isOpen, Close }) {

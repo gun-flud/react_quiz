@@ -1,6 +1,6 @@
 import { useId } from "react";
-import Input from "./Input";
-import Textarea from "./Textarea";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
 import '@/assets/index.css';
 
 import plusIcon from '@/assets/icons/plus-icon.png';

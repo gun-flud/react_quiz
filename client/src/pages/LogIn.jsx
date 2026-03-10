@@ -1,5 +1,5 @@
 import Input from "../components/ui/Input";
-import Password from "../components/ui/password";
+import Password from "../features/auth/components/Password";
 
 import hidePassword from '../assets/icons/hide-password.svg';
 import showPassword from '../assets/icons/show-password.svg';

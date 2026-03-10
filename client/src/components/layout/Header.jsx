@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router'
 import { useNavigate } from 'react-router'
 
-import { useResponsive } from '@/logic/HandleResize.jsx'
-import MobileMenu from '@/logic/MobileMenu.jsx'
+import { useResponsive } from '@/utils/HandleResize.jsx'
+import MobileMenu from '@/components/ui/MobileMenu.jsx'
 // importin generator and iterator
 import PremiumIcon from '@/components/ui/PremiumIcon.jsx'
 

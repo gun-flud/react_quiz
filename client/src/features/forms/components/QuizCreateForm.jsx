@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useId } from 'react'
 import { useNavigate } from 'react-router'; 
-import { useQuizzes } from '@/features/quizzes/quiz.context.jsx';
+import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
 import QuestionForm from './QuestionForm.jsx'; 
 import '@/assets/index.css';
 
