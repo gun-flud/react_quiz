@@ -6,9 +6,9 @@ import { useResponsive } from '../logic/HandleResize.jsx'
 import MobileMenu from '../logic/MobileMenu.jsx'
 // importin generator and iterator
 import PremiumIcon from '../ui/PremiumIcon.jsx'
-import "../index.css"
-import logoIcon from '../assets/logo-icon.png'
-import menuIcon from '../assets/menu-icon.svg'
+
+import logoIcon from '../assets/icons/logo-icon.png'
+import menuIcon from '../assets/icons/menu-icon.svg'
 
 function Header() {
   const navigate = useNavigate();

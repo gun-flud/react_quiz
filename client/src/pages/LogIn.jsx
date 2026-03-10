@@ -1,9 +1,9 @@
 import Input from "../ui/Input";
 import Password from "../ui/password";
-import "../index.css";
-import hidePassword from '../assets/hide-password.svg';
-import showPassword from '../assets/show-password.svg';
-import GoogleIcon from '../assets/google-icon.svg';
+
+import hidePassword from '../assets/icons/hide-password.svg';
+import showPassword from '../assets/icons/show-password.svg';
+import GoogleIcon from '../assets/icons/google-icon.svg';
 
 
 function LogIn() {

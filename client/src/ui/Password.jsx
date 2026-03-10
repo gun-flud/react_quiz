@@ -1,7 +1,7 @@
 import { use, useId, useState } from "react";
-import hidePassword from '../assets/hide-password.svg';
-import showPassword from '../assets/show-password.svg';
-import "../index.css";
+import hidePassword from '../assets/icons/hide-password.svg';
+import showPassword from '../assets/icons/show-password.svg';
+import '@/assets/index.css';
 
 function Password({ label = '', type, value, onChange, placeholder, ...props}) {
     

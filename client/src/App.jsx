@@ -6,7 +6,6 @@ import Home from './pages/Home.jsx'
 import Editing from './pages/Editing.jsx'
 import Play from './pages/Play.jsx'
 import LogIn from './pages/LogIn.jsx'
-import './index.css'
 
 function App() {
 

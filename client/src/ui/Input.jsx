@@ -1,5 +1,5 @@
 import { useId } from "react";
-import "../index.css";
+import '@/assets/index.css';
 
 function Input({ label = '', type, value, onChange, placeholder, ...props}) {
   return (

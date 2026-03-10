@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 import QuizEditForm from '../ui/QuizEditForm.jsx';
 import QuizCreateForm from '../ui/QuizCreateForm.jsx';
 import PlayQuiz from '../ui/PlayQuiz.jsx';
-import "../index.css";
 
 
 function Play() {

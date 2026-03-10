@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useQuizzes } from '../features/quizzes/quiz.context.jsx';
 import { Link } from "react-router";
-import moreIcon from "../assets/more-icon.svg";
+
+import moreIcon from "../assets/icons/more-icon.svg";
 
 
 
