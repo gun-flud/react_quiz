@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import QuizList from '../ui/QuizList.jsx'; 
-import { useQuizzes } from '../features/quizzes/quiz.context.jsx';
-import "../index.css";
-import plusIcon from '../assets/plus-icon.png';
+import QuizList from '@/features/homepage/components/QuizList.jsx'; 
+import { useQuizzes } from '../quizzes_to_remove/quiz.context.jsx';
+
+import plusIcon from '@/assets/icons/plus-icon.png';
 
 function Home() {
 //     useEffect(() => {

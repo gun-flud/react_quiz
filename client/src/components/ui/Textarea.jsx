@@ -1,6 +1,6 @@
 import TextareaAutosize from "react-textarea-autosize";
 import { useId, forwardRef} from "react";
-import "../index.css";
+import '@/assets/index.css';
 
 const Textarea = forwardRef(({ value, onChange, placeholderTextarea = 'Enter quiz description', ...props}, ref) => {
     return (

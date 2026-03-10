@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useId } from 'react'
 import { useNavigate } from 'react-router'; 
-import { useQuizzes } from '../features/quizzes/quiz.context.jsx';
+import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
 import QuestionForm from './QuestionForm.jsx'; 
-import "../index.css"
-import plusIcon from '../assets/plus-icon.png';
+import '@/assets/index.css';
+
+import plusIcon from '@/assets/icons/plus-icon.png';
 
 
 function QuizCreateForm() {

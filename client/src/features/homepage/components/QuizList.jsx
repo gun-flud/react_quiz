@@ -1,5 +1,5 @@
 import QuizCard from "./QuizCard"; // Імпортуємо картку сюди
-import "../index.css";
+import '@/assets/index.css';
 
 function QuizList({ quizzes }) {
     // Перевірка, чи є дані, щоб не впала помилка

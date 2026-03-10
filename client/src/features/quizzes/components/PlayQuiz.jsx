@@ -1,7 +1,7 @@
 import { useId, useState, useEffect} from "react";
-import { useQuizzes } from '../features/quizzes/quiz.context.jsx';
+import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
 import PlayCard from './PlayCard.jsx';
-import "../index.css";
+import '@/assets/index.css';
 
 function PlayQuiz( { QuizId } ) {
     const [ quizData, setQuizData ] = useState(null);

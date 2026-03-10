@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { timerGenerator } from "../logic/timerGenerator";
+import { timerGenerator } from "@/utils/timerGenerator";
 
-import closeIcon from "../assets/close-icon.svg";
+import closeIcon from "@/assets/icons/close-icon.svg";
 
 function PremiumIcon({ endDate = new Date("2026-03-06T01:34:19Z").getTime() }) {
     const TimerRef = useRef(timerGenerator(endDate));

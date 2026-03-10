@@ -1,0 +1,10 @@
+// jsconfig.json is used to configure the JavaScript language features in your project. It allows you to specify the base URL and path aliases for your modules, making it easier to import them without having to use relative paths.
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src", "src/quizzes_to_remove"]
+}

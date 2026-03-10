@@ -1,9 +1,10 @@
 import { useId } from "react";
-import Input from "./Input";
-import Textarea from "./Textarea";
-import "../index.css";
-import plusIcon from '../assets/plus-icon.png';
-import deleteIcon from '../assets/trash-icon.png';
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+import '@/assets/index.css';
+
+import plusIcon from '@/assets/icons/plus-icon.png';
+import deleteIcon from '@/assets/icons/trash-icon.png';
 
 function QuestionForm({ formType, label = 'Delete', type = 'text', value, onChange, placeholder, ...props}) {
   if (formType === "title") {
