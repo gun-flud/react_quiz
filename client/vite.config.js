@@ -1,21 +1,22 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import path from 'path'; 
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from 'tailwindcss';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// https://vite.dev/config/
+// Відтворюємо __dirname для ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export default defineConfig({
   plugins: [
-    react(), 
+    react(),
     tailwindcss(),
   ],
   resolve: {
     alias: {
-      // This tells Vite that '@' means the 'src' directory
+      // __dirname
       '@': path.resolve(__dirname, './src'),
     },
   },
-  server: {
-    // proxy settings from earlier will be here
-  }
-})
+});
