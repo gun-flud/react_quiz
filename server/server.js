@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import cors from "@fastify/cors"
 
 // logging
 const fastify = Fastify({
@@ -11,6 +12,14 @@ const fastify = Fastify({
         },
     },
 });
+
+//CORS usage
+fastify.register(cors, {
+    origin: 'http://localhost:3000/',
+    methods: ['GET', 'PUT', 'POST', 'DELETE'], 
+});
+
+
 
 fastify.get("/", (req, res) => {
     res.status(200).send("lakhsdklkjajsd");
