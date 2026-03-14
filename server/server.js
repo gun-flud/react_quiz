@@ -18,7 +18,7 @@ const fastify = Fastify({
 
 //CORS usage libriary
 fastify.register(cors, {
-    origin: 'http://localhost:3000/',
+    origin: 'http://localhost:3000',
     methods: ['GET', 'PUT', 'POST', 'DELETE'], 
 });
 
