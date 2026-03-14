@@ -1,7 +1,10 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors"
+import { config } from "dotenv";
+config();
+const PORT = process.env.PORT
 
-// logging
+// logging libriary
 const fastify = Fastify({
     logger: {
         transport: {
@@ -13,7 +16,7 @@ const fastify = Fastify({
     },
 });
 
-//CORS usage
+//CORS usage libriary
 fastify.register(cors, {
     origin: 'http://localhost:3000/',
     methods: ['GET', 'PUT', 'POST', 'DELETE'], 
@@ -31,7 +34,7 @@ fastify.get("/use", (req, res) => {
 
 //listening for server
 const port = {
-    port: 8080,
+    port: PORT,
     host: "0.0.0.0",
 };
 fastify.listen(port, (err, address) => {
