@@ -6,5 +6,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "../server/quizzes_to_remove"]
+  "include": ["src", "src/quizzes_to_remove"]
 }

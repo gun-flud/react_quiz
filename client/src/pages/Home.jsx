@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import QuizList from '@/features/homepage/components/QuizList.jsx'; 
-import { useQuizzes } from '../../../server/quizzes_to_remove/quiz.context.js';
-
+import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
 import plusIcon from '@/assets/icons/plus-icon.png';
+
+import api from '@/lib/api.client.js';
 
 function Home() {
 //     useEffect(() => {
@@ -11,6 +12,7 @@ function Home() {
 //   }, []);
 
     const { quizzes, deleteQuiz } = useQuizzes();
+    
     // const [quizzes] = useState(tests.quizzes);
     if (!quizzes) {
         return <div className="text-center mt-10">Завантаження тесту...</div>;
@@ -24,7 +26,10 @@ function Home() {
             
             {/* Створення списку тестів */}
             <QuizList quizzes={quizzes} /> 
-            
+            {/* //test my api */}
+            <button className="button" onClick={api}>
+                Видалити перший тест
+            </button>
         </div>
     )
 }
