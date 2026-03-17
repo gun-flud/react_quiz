@@ -22,10 +22,20 @@ fastify.register(cors, {
     methods: ['GET', 'PUT', 'POST', 'DELETE'], 
 });
 
+// return schema
+const getSchema = {
+    response: {
+        200: {
+            properties: {
+                message: { type: 'string' }
+            } 
+        }
+    }
+};
 
-
-fastify.get("/", (req, res) => {
-    res.status(200).send("lakhsdklkjajsd");
+fastify.get("/", { schema: getSchema }, (req, res) => {
+    return { message: 'hello world' }
+    // res.status(200).send("lakhsdklkjajsd");
 });
 
 fastify.get("/use", (req, res) => {
@@ -43,3 +53,6 @@ fastify.listen(port, (err, address) => {
         process.exit(1);
     }
 });
+
+
+
