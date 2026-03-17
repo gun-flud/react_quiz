@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import QuizList from '@/features/homepage/components/QuizList.jsx'; 
-import { useQuizzes } from '../../../server/quizzes_to_remove/quiz.context.js';
+import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
 import plusIcon from '@/assets/icons/plus-icon.png';
 
 import api from '@/lib/api.client.js';

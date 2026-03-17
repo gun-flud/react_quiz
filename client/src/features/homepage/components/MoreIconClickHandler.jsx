@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useQuizzes } from '../../../../../server/quizzes_to_remove/quiz.context.js';
+import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
 import { Link } from "react-router";
 
 import moreIcon from "@/assets/icons/more-icon.svg";

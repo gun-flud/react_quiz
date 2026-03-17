@@ -39,7 +39,8 @@ fastify.get("/", { schema: getSchema }, (req, res) => {
 });
 
 fastify.get("/use", (req, res) => {
-    res.status(200).send("succes");
+    // res.status(200).send("succes");
+    return { message: 'hello world' } 
 });
 
 //listening for server
