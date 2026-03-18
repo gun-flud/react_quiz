@@ -1,8 +1,12 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors"
-import { config } from "dotenv";
-config();
-const PORT = process.env.PORT
+
+import { env } from './config/env.js'
+// import { config } from "dotenv";
+// config();
+
+// const PORT = process.env.PORT
+const PORT = env.PORT;
 
 // logging libriary
 const fastify = Fastify({
