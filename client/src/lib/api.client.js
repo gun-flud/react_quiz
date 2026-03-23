@@ -65,4 +65,11 @@ const promise = new Promise((resolve, reject) => {
     }
 })
 
-    
+promise.then(response => console.log(response));
+
+try {
+    const response = await promise;
+    console.log(response);
+} catch (err) {
+    console.log(err);
+}
