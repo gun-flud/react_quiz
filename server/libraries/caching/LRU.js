@@ -1,5 +1,5 @@
 class Node {
-    constructor (key, value) {
+    constructor(key, value) {
         this.key = key || null;
         this.value = value || null;
         this.prev = null;
@@ -8,8 +8,7 @@ class Node {
 }
 
 export class LRUCache {
-
-    constructor (capacity){
+    constructor(capacity) {
         this.cache = new Map();
         this.capacity = capacity;
 
@@ -22,7 +21,6 @@ export class LRUCache {
 
     add(node) {
         const firstEl = this.head.next;
-        //const node = new Node(key, value);
 
         this.head.next = node;
         node.prev = this.head;
@@ -38,7 +36,7 @@ export class LRUCache {
         nextVal.prev = previousVal;
     }
 
-    put (key, value) {
+    put(key, value) {
         if (this.cache.has(key)) {
             const oldNode = this.cache.get(key);
             this.remove(oldNode);
@@ -60,7 +58,7 @@ export class LRUCache {
         return [this.cache.get(key).value, this.cache.size];
     }
 
-    get (key) {
+    get(key) {
         if (this.head.next === this.tail) return;
 
         if (this.cache.has(key)) {
@@ -69,12 +67,22 @@ export class LRUCache {
             this.remove(node);
             this.add(node);
         } else {
-            return -1
+            return -1;
         }
 
-            return [this.cache.get(key).value, this.cache.size];
+        return [this.cache.get(key).value, this.cache.size];
     }
-}
+
+    moveForward(node) {
+        const nextEl = node.next;
+        const prevEl = node.prev;
+
+        nextEl.prev = prevEl;
+        prevEl.next = firstEl;
+
+        this.add(node);
+    }
+ }
 // const cache = new LRUCache(2);
 
 // console.log('Cache:', cache);

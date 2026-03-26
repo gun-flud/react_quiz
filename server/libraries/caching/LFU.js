@@ -1,6 +1,3 @@
-
-// LFU
-
 class Node {
     constructor(key, value) {
         this.key = key;
@@ -92,7 +89,10 @@ export class LFUCache {
 
         this.remove(node);
 
-        if (this.freqList.get(oldFreq).head.next === this.freqList.get(oldFreq).tail) {
+        if (
+            this.freqList.get(oldFreq).head.next ===
+            this.freqList.get(oldFreq).tail
+        ) {
             this.freqList.delete(oldFreq);
 
             if (this.minFrequency === oldFreq) {
@@ -105,7 +105,6 @@ export class LFUCache {
         //додати фріквенсі ноде
     }
 }
-
 
 // const cache = new LFUCache(2);
 

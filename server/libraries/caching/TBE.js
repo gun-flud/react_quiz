@@ -1,31 +1,27 @@
-// TTL   TBE
-// мусорозбірник(якийсь загальний час, коли воно чистить кеш)
-// додавання елементу в кеш з його ttl, ключем і значенням
-
 class Node {
-    constructor (value, deleteTime) {
+    constructor(value, deleteTime) {
         this.value = value;
         this.deleteTime = deleteTime;
     }
 }
 export class TBECache {
-    constructor (timelimit) {
+    constructor(timelimit) {
         this.cache = new Map();
         this.timestamp = timelimit;
 
         const timer = setInterval(() => {
             this.garbadgeCollect();
-        }, this.timestamp)
+        }, this.timestamp);
     }
 
-    put (key, value) {
+    put(key, value) {
         const deleteTime = Date.now() + this.timestamp;
         const node = new Node(value, deleteTime);
         this.cache.set(key, node);
         return node.value;
     }
 
-    get (key) {
+    get(key) {
         if (!this.cache.has(key)) return -1;
 
         const node = this.cache.get(key);
@@ -37,19 +33,18 @@ export class TBECache {
         return node.value;
     }
 
-    garbadgeCollect () {
+    garbadgeCollect() {
         let deleteCounLog = 0;
 
         for (const [key, node] of this.cache) {
-
             if (Date.now() >= node.deleteTime) {
                 this.cache.delete(key);
-                deleteCounLog++
+                deleteCounLog++;
             }
         }
 
         if (deleteCounLog > 0) {
-            console.log('GarbageCollector deleted: ', deleteCounLog);
+            console.log("GarbageCollector deleted: ", deleteCounLog);
         }
     }
 }
