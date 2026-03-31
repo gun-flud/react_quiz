@@ -2,6 +2,8 @@ import Fastify from "fastify";
 import cors from "@fastify/cors"
 
 import { env } from './config/env.js'
+
+import homeRoutes from './apps/home/entry-points/home.routes.js'
 // import { config } from "dotenv";
 // config();
 
@@ -46,6 +48,10 @@ fastify.get("/use", (req, res) => {
     // res.status(200).send("succes");
     return { message: 'hello world' } 
 });
+
+
+// home
+fastify.register(homeRoutes, {prefix: '/home'});
 
 //listening for server
 const port = {
