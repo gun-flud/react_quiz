@@ -7,11 +7,11 @@ export default async function apiClient () {
         }
 
         const result = await response.json();
-        console.log(result);
+        console.log(result, response.status);
     } catch (err) {
         console.error("res error:", err);
     } finally {
-        console.log('server is connected', response.status);
+        console.log('server is connected');
     }
 
 }

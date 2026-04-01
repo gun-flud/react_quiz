@@ -1,3 +1,6 @@
+import * as homeService from "../domain/home.service.js"
+
 export const getHome = async (req, reply) => {
-    return {message: "getHome is running correct"};
+    reply.status(200);
+    return {message: await homeService.data};
 }
