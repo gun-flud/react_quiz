@@ -19,11 +19,13 @@
 // string path 
 export default async function apiClient (path, options={}) {
     try {
-        const response = await fetch(path, {
-            ...options,
-            headers: {
+        const {headers: headersOpt, ...resOptions} = options;
 
-                ...options.headers, // all headers 
+        const response = await fetch(path, {
+            ...resOptions,
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                ...headersOpt, // all headers 
             },        
         });
 
@@ -32,6 +34,7 @@ export default async function apiClient (path, options={}) {
         }
 
         const result = await response.json();
+        return result;
     } catch (err) {
         console.error('res error:', err);
     }

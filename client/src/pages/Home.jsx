@@ -4,7 +4,7 @@ import QuizList from '@/features/homepage/components/QuizList.jsx';
 import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
 import plusIcon from '@/assets/icons/plus-icon.png';
 
-import api from '@/lib/api.client.js';
+import api from '@/lib/API/api.client.js';
 
 function Home() {
 //     useEffect(() => {
