@@ -4,6 +4,7 @@
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
   <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="NodeJS" />
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JS" />
+  <img src="https://img.shields.io/badge/Fastify-000000?style=for-the-badge&logo=fastify&logoColor=white" alt="Fastify" />
 </p>
 
 ---
@@ -55,3 +56,40 @@ client/
 ├── package.json          # Frontend dependencies and npm scripts
 └── vite.config.js        # Vite settings, Tailwind plugins, and Backend Proxy rules
 ```
+
+Our `src/` directory is strictly organized by responsibility.
+
+### `assets/`
+Contains global static files that do not change dynamically.
+* **Contents:** Images, SVGs, global CSS (`index.css`), fonts.
+* **Rule:** No JavaScript business logic resides here.
+
+### `components/`
+Contains pure, reusable UI components shared across the entire application.
+* **Contents:** Buttons, inputs, modals, loading spinners, and layout wrappers.
+* **Rule:** These components are "dumb". They should not contain data-fetching logic or domain-specific state. They receive data strictly via `props`.
+
+### `features/`
+The core business logic of the application, broken down by domain (e.g., `quizzes`, `users`, `auth`).
+* **Contents:** Each feature folder acts as its own mini-application containing:
+  * `/api`: Pure JS functions for fetching/mutating data (`getQuizzes.js`).
+  * `/hooks`: React hooks that bridge the API with the UI (`useQuizzes.js`).
+  * `/components`: Domain-specific UI elements that are not shared globally (`QuizCard.jsx`).
+* **Rule:** Features should be self-contained. A component in the `quizzes` feature should not directly mutate state belonging to the `users` feature.
+
+### `lib/`
+Contains global infrastructure, API clients, and complex custom engines.
+* **Contents:** * `apiClient.js`: The centralized fetch wrapper handling base URLs and global errors.
+  * `queryCache.js`: The LRU cache instance for storing API responses.
+  * `useCustomQuery.js`: The custom data-fetching engine managing `isLoading`, `error`, and `data` states.
+* **Rule:** Code here must be completely agnostic. It should not know what a "Quiz" is; it only handles generic data pipelines.
+
+### `pages/`
+The routing layer. These files represent the actual screens the user navigates to.
+* **Contents:** `DashboardPage.jsx`, `QuizEditorPage.jsx`.
+* **Rule:** Keep these files extremely thin. They act as "assemblers" that import UI from `components/` and data from `features/`, rendering them together on the screen.
+
+### `utils/`
+Stateless, pure JavaScript helper functions.
+* **Contents:** Data formatters, mathematical calculators (e.g., test grading logic), or string manipulators.
+* **Rule:** No React code or Hooks (`useState`, `useEffect`) are allowed in this folder.
