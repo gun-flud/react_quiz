@@ -20,6 +20,7 @@ export default function useApiManager(path, options = {}) {
                     if (isMounted) {
                         setIsValue(cachedData);
                         setIsLoading(false);
+                        // console.log('data from cache');
                     }
                 } else {
                     const value = await apiClient(path, options);
@@ -28,10 +29,16 @@ export default function useApiManager(path, options = {}) {
                         setIsValue(value);
                         queryCache.put(path, value);
                         setIsLoading(false);
+                        // console.log('data from server');
                     }
+
                 }
             } catch (err) {
-                if (isMounted) setIsError(true);
+                if (isMounted) {
+                    setIsError(true); 
+                    setIsLoading(false);
+                }
+                console.error(err.message);
             }
 
         };
@@ -44,3 +51,5 @@ export default function useApiManager(path, options = {}) {
 
     return { isError, isLoading, isValue };
 }
+
+

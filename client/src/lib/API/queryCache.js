@@ -55,32 +55,18 @@ class LRUCache {
         this.cache.set(key, node);
         this.add(node);
 
-        return [this.cache.get(key).value, this.cache.size];
     }
 
     get(key) {
         if (this.head.next === this.tail) return;
+        if (!this.cache.has(key)) return;
 
-        if (this.cache.has(key)) {
             const node = this.cache.get(key);
 
             this.remove(node);
             this.add(node);
-        } else {
-            return -1;
-        }
 
-        return [this.cache.get(key).value, this.cache.size];
-    }
-
-    moveForward(node) {
-        const nextEl = node.next;
-        const prevEl = node.prev;
-
-        nextEl.prev = prevEl;
-        prevEl.next = firstEl;
-
-        this.add(node);
+        return node.value;
     }
 // if I have data changed 
     invalidate(key) {
@@ -92,13 +78,9 @@ class LRUCache {
         }
     }
     has (key) {
-        // return this.cache.has(key);
-        return true;
+        return this.cache.has(key);
     }
 }
 
 const maxCacheSize = parseInt(import.meta.env.VITE_MAX_CACHE_SIZE, 10) || 50;
 export default new LRUCache(maxCacheSize);
-
-
-// rewrite returns, rework logic
