@@ -34,7 +34,7 @@ export default async function apiClient (path, options={}) {
         }
 
         const result = await response.json();
-        return result;
+        return result; 
     } catch (err) {
         console.error('res error:', err.message || err);
     }

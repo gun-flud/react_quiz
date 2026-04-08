@@ -91,9 +91,14 @@ class LRUCache {
             this.cache.delete(key);
         }
     }
+    has (key) {
+        // return this.cache.has(key);
+        return true;
+    }
 }
 
-export default new LRUCache(import.meta.env.VITE_MAX_CACHE_SIZE);
+const maxCacheSize = parseInt(import.meta.env.VITE_MAX_CACHE_SIZE, 10) || 50;
+export default new LRUCache(maxCacheSize);
 
 
 // rewrite returns, rework logic
