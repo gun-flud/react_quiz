@@ -4,9 +4,17 @@ import queryCache from "./queryCache.js";
 import apiClient from "./api.client.js";
 
 export default function useApiManager(path, options = {}) {
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true);
+    // const [isError, setIsError] = useState(false);
+    // const [isValue, setIsValue] = useState(null);
+
+    //way much faster case:
+    const hasCacheData = queryCache.has(path);
+    const cacheData = queryCache.get(path)
+
+    const [isLoading, setIsLoading] = useState(!hasCacheData);
     const [isError, setIsError] = useState(false);
-    const [isValue, setIsValue] = useState(null);
+    const [isValue, setIsValue] = useState(cacheData);
 
     useEffect(() => {
         let isMounted = true;
@@ -20,7 +28,7 @@ export default function useApiManager(path, options = {}) {
                     if (isMounted) {
                         setIsValue(cachedData);
                         setIsLoading(false);
-                        // console.log('data from cache');
+                        console.log('data from cache');
                     }
                 } else {
                     const value = await apiClient(path, options);
@@ -29,7 +37,7 @@ export default function useApiManager(path, options = {}) {
                         setIsValue(value);
                         queryCache.put(path, value);
                         setIsLoading(false);
-                        // console.log('data from server');
+                        console.log('data from server');
                     }
 
                 }
