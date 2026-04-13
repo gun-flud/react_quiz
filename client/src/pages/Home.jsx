@@ -1,37 +1,35 @@
-import { useState } from 'react';
-import { Link } from 'react-router';
-import QuizList from '@/features/homepage/components/QuizList.jsx'; 
-import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
-import plusIcon from '@/assets/icons/plus-icon.png';
+import { Link } from "react-router";
+import QuizList from "@/features/homepage/components/QuizList.jsx";
+import getQuizzes from "@/features/homepage/api/useHomeQuizzes";
 
-import api from '@/lib/api.client.js';
+import plusIcon from "@/assets/icons/plus-icon.png";
 
 function Home() {
-//     useEffect(() => {
-//     subscribe(setQuizzes);
-//   }, []);
+    const { isError, isLoading, isValue: quizzes } = getQuizzes();
 
-    const { quizzes, deleteQuiz } = useQuizzes();
-    
-    // const [quizzes] = useState(tests.quizzes);
-    if (!quizzes) {
-        return <div className="text-center mt-10">Завантаження тесту...</div>;
+    if (isLoading) {
+        return <div className="text-center mt-10">
+            Завантаження тесту...
+            </div>;
     }
 
+    if (isError) {
+        return <div className="text-center mt-10">
+            Помилка
+            </div>;
+    }
+
+    // треба додати лоадер, і тоді буде супер, або ми можемо імпортитb
+    // значення іс лоадінг разом з QuizList, і таким чином працювати
     return (
-        <div className="container"> 
+        <div className="container">
             <Link className="quiz-card" to="/create">
-                <img src={plusIcon} alt="Add Quiz"  className="icon mx-auto" />
+                <img src={plusIcon} alt="Add Quiz" className="icon mx-auto" />
             </Link>
-            
             {/* Створення списку тестів */}
-            <QuizList quizzes={quizzes} /> 
-            {/* //test my api */}
-            <button className="button" onClick={api}>
-                Видалити перший тест
-            </button>
+            <QuizList quizzes={quizzes} />
         </div>
-    )
+    );
 }
 
 export default Home;
