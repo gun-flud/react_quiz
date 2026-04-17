@@ -93,3 +93,61 @@ The routing layer. These files represent the actual screens the user navigates t
 Stateless, pure JavaScript helper functions.
 * **Contents:** Data formatters, mathematical calculators (e.g., test grading logic), or string manipulators.
 * **Rule:** No React code or Hooks (`useState`, `useEffect`) are allowed in this folder.
+
+---
+
+## 🐘 Local Database Setup (Docker)
+
+This project includes a local PostgreSQL + pgAdmin setup in `docker-compose.yml`.
+
+### What is included
+* `postgres` service for the application database.
+* `pgadmin` service for database administration UI.
+* Named volumes for persistent data between container restarts.
+
+### Prerequisites
+* Docker Desktop (or Docker Engine + Compose plugin).
+
+### 1. Create local environment file
+Run from the project root:
+
+```bash
+cp .env.example .env
+```
+
+On Windows PowerShell (if `cp` alias is unavailable):
+
+```powershell
+Copy-Item .env.example .env
+```
+
+### 2. Start database services
+
+```bash
+docker-compose up -d
+```
+
+If you use the newer CLI syntax, this is equivalent:
+
+```bash
+docker compose up -d
+```
+
+### 3. Open pgAdmin
+* URL: `http://localhost:5050`
+* Login credentials are read from `.env`:
+  * `PGADMIN_DEFAULT_EMAIL`
+  * `PGADMIN_DEFAULT_PASSWORD`
+
+### 4. Register the Postgres server in pgAdmin
+Use these connection values:
+* **Host:** `postgres`
+* **Port:** `5432`
+* **Database:** value of `DB_NAME` (default: `quiz_db`)
+* **Username:** value of `DB_USER` (default: `postgres`)
+* **Password:** value of `DB_PASSWORD`
+
+### 5. Data persistence notes
+* Database data is stored in a named Docker volume (`postgres_data`).
+* Running `docker-compose down` stops/removes containers and network, but keeps named volumes.
+* Running `docker-compose down -v` removes named volumes and deletes local DB data.
