@@ -18,3 +18,13 @@ pool.on("error", err => {
     process.exit(1);
 });
 
+export default async function query(sql, params) {
+    try {
+        const { rows } = await pool.query(sql, params);
+        return rows;
+    } catch (err) {
+        console.error("DB query failed:", err.message);
+        throw err;
+    }
+}
+
