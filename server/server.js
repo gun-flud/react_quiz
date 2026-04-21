@@ -1,8 +1,10 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors"
 
-import { env } from './config/env.js'
-import homeRoutes from './apps/home/entry-points/home.routes.js'
+import { env } from './src/config/env.js'
+import homeRoutes from './src/apps/home/entry-points/home.routes.js'
+
+import {pool} from './src/db/pool.js';
 
 const PORT = env.PORT;
 
@@ -55,7 +57,6 @@ fastify.get("/use", (req, res) => {
 
 // home
 fastify.register(homeRoutes, {prefix: '/home'});
-
 
 try {
 

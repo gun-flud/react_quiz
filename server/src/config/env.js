@@ -20,7 +20,16 @@ import * as z from "zod";
 // }
 
 const envSchema = z.object({
-    PORT: z.coerce.number()
+    PORT: z.coerce.number(),
+    DB_HOST: z.coerce.string(),
+    DB_PORT: z.coerce.number(),
+DB_PORT_INTERNAL: z.coerce.number(),
+DB_NAME: z.coerce.string(),
+DB_USER: z.coerce.string(),
+DB_PASSWORD: z.coerce.string(),
+
+PGADMIN_DEFAULT_EMAIL: z.coerce.string(),
+PGADMIN_DEFAULT_PASSWORD: z.coerce.string(),
 });
 const result = envSchema.safeParse(process.env);
 
