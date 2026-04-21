@@ -28,7 +28,7 @@ export default function useApiManager(path, options = {}) {
                     if (isMounted) {
                         setIsValue(cachedData);
                         setIsLoading(false);
-                        console.log('data from cache');
+                        // console.log('data from cache');
                     }
                 } else {
                     const value = await apiClient(path, options);
@@ -37,7 +37,7 @@ export default function useApiManager(path, options = {}) {
                         setIsValue(value);
                         queryCache.put(path, value);
                         setIsLoading(false);
-                        console.log('data from server');
+                        // console.log('data from server');
                     }
 
                 }

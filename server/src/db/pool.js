@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import { env } from "../config/env.js";
 
-export const pool = new Pool({
+const pool = new Pool({
     host: env.DB_HOST,
     port: env.DB_PORT,
     database: env.DB_NAME,
@@ -13,18 +13,17 @@ export const pool = new Pool({
     connectionTimeoutMillis: 2000,
 });
 
-pool.on("error", err => {
+pool.on("error", (err) => {
     console.error("Unexpected DB pool error:", err.message);
     process.exit(1);
 });
 
-export default async function query(sql, params) {
+export default async function query(sql, params = "") {
     try {
-        const { rows } = await pool.query(sql, params);
-        return rows;
+        const reply = await pool.query(sql, params);
+        return reply;
     } catch (err) {
         console.error("DB query failed:", err.message);
         throw err;
     }
 }
-

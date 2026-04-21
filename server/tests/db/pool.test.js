@@ -1,7 +1,7 @@
-import { pool } from "../../src/db/pool.js";
+import query from "../../src/db/pool.js";
 
 try {
-    const { rows } = await pool.query(`SELECT NOW()`);
+    const { rows } = await query(`SELECT NOW()`);
 
     console.log("Db is connected succesfully", rows[0].now);
 } catch (err) {
