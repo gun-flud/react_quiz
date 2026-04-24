@@ -4,7 +4,7 @@ import cors from "@fastify/cors"
 import { env } from './src/config/env.js'
 import homeRoutes from './src/apps/home/entry-points/home.routes.js'
 
-import {pool} from './src/db/pool.js';
+import query from './src/db/pool.js';
 
 const PORT = env.PORT;
 
