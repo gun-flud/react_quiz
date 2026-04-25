@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-
+    "migrate": "node src/db/scripts/migrate.js",    
     "db:ping": "node --env-file=.env.development tests/db/pool.test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
