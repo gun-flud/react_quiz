@@ -1,7 +1,9 @@
 import { config } from "dotenv";
-config({ 
-    path: `.env.${process.env.NODE_ENV || "development"}`, 
-    debug: true });
+const devConfig = process.env.NODE_ENV || "development";
+config({
+    path: `.env.${devConfig}`,
+    debug: devConfig === "development",
+});
 
 import * as z from "zod";
 
