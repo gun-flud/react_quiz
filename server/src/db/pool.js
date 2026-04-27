@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import { env } from "../config/env.js";
 
-const pool = new Pool({
+export const pool = new Pool({
     host: env.DB_HOST,
     port: env.DB_PORT,
     database: env.DB_NAME,

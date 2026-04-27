@@ -17,7 +17,8 @@ export default function useApiManager(path, options = {}) {
     const [isValue, setIsValue] = useState(cacheData);
 
     useEffect(() => {
-        let isMounted = true;
+        const controller = new AbortController();
+        const signal = controller.signal;
 
         const fetchData = async () => {
             try {
@@ -25,24 +26,27 @@ export default function useApiManager(path, options = {}) {
                     const cachedData = queryCache.get(path);
                     if (!cachedData) throw new Error("Empty Cache Node");
 
-                    if (isMounted) {
+                    if (!signal.aborted) {
                         setIsValue(cachedData);
                         setIsLoading(false);
                         // console.log('data from cache');
                     }
                 } else {
-                    const value = await apiClient(path, options);
+                    const requestOptions = { ...options, signal };
 
-                    if (isMounted) {
+                    const value = await apiClient(path, requestOptions);
+
+                    if (!signal.aborted) {
                         setIsValue(value);
                         queryCache.put(path, value);
                         setIsLoading(false);
                         // console.log('data from server');
                     }
-
                 }
             } catch (err) {
-                if (isMounted) {
+                if (err.name === "AbortError") return;
+
+                if (!signal.aborted) {
                     setIsError(true); 
                     setIsLoading(false);
                 }
@@ -53,7 +57,7 @@ export default function useApiManager(path, options = {}) {
         fetchData();
 
         return () => {
-            isMounted = false;
+            controller.abort(); 
         }
     }, [path]);
 
