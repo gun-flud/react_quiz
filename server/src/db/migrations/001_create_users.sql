@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(60),
     profile_photo VARCHAR(255),
     profile_description TEXT,
+    role VARCHAR(20),
 
     PRIMARY KEY (id)
 )
