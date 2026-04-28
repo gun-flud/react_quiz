@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS quizzes (
     points INT 
         DEFAULT NULL,
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
     FOREIGN KEY (creatior_id) REFERENCES users(id) ON DELETE CASCADE
     )

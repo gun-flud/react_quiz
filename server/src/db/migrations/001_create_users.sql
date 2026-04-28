@@ -1,12 +1,14 @@
 CREATE TABLE IF NOT EXISTS users (
     id UUID UNIQUE
         DEFAULT gen_random_uuid(),
-    user VARCHAR(100) NOT NULL,
+    username VARCHAR(255) NOT NULL,
     password_hash VARCHAR(400) NOT NULL,
-    email VARCHAR(60),
+    email VARCHAR(60) UNIQUE NOT NULL,
     profile_photo VARCHAR(255),
     profile_description TEXT,
-    role VARCHAR(20),
+    role VARCHAR(20) NOT NULL 
+        DEFAULT 'student'
+        CHECK (role IN ('student', 'teacher', 'admin')),
 
     PRIMARY KEY (id)
 )
