@@ -78,7 +78,7 @@ export async function migrationsManager() {
                 await client.query("ROLLBACK");
                 console.error("[ERROR] migration error", error.message);
             } catch (rollbackError) {
-                console.error("[ERROR] ROLLBACK error", error.message);
+                console.error("[ERROR] ROLLBACK error", rollbackError.message);
             }
         }
     } finally {

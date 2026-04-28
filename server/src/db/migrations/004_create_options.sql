@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS options (
-    id UUID UNIQUE
+    id UUID 
         DEFAULT gen_random_uuid(),
     question_id UUID NOT NULL,
     body VARCHAR(500) NOT NULL,
