@@ -5,5 +5,11 @@ export default function homeRoutes (fastify, components, done) {
 
     fastify.get('/quiz/:id', homeController.getById);
 
+    fastify.post('/create', homeController.create);
+
+    fastify.delete('/delete/:id', homeController.deleteById);
+
+    fastify.put('/edit/:id', homeController.editById);
+
     done();
 }

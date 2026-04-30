@@ -52,3 +52,57 @@ export async function getById(id) {
 
     return quiz;
 }
+
+export async function createFullQuiz(data) {
+    const { questions, ...quizData } = data;
+    console.log(data);
+
+    const client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+
+        const createdQuiz = await dataAccessModule.createQuiz(client, quizData);
+        console.log('[CREATED] quiz with id:', createdQuiz.id);
+
+        for (const question of questions) {
+            const questionData = {
+                quiz_id: createdQuiz.id,
+                ...question,
+            };
+
+            const createdQuestion = await dataAccessModule.createQuestion(client, questionData);
+            console.log('[CREATED] question with id:', createdQuestion.id);
+
+            const optionData = [
+                ...question.options
+            ];
+
+            const createdOptions = await dataAccessModule.createOption(client, optionData, createdQuestion.id);
+            console.log('[CREATED] options:', createdOptions.length);
+        }
+
+        await client.query('COMMIT');
+        console.log('[CREATED] success!');
+
+    } catch (error) {
+        try {
+            await client.query("ROLLBACK");
+        } catch (rollbackError) {
+            console.error('RollbackError: ', rollbackError.message);
+        }
+        console.error('transaction rolled back:', error.message);
+        throw error;
+    } finally {
+        client.release();
+    }
+}
+
+export async function deleteById(id) {
+    const rows = await dataAccessModule.deleteById(id);
+}
+
+export async function editById(id, data) {
+    // if 
+
+    const rows = await dataAccessModule.editById(id, data);
+}
