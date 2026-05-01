@@ -44,7 +44,10 @@ export default function useApiManager(path, options = {}) {
                     }
                 }
             } catch (err) {
-                if (err.name === "AbortError") return;
+                if (err.name === "AbortError") {
+                    console.log("Fetch safely aborted by React Strict Mode.");
+                    return;
+                }
 
                 if (!signal.aborted) {
                     setIsError(true); 

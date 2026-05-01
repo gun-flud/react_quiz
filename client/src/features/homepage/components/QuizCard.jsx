@@ -1,11 +1,11 @@
 import { Link } from 'react-router'
 import MoreIconClickHandler from '@/features/homepage/components/MoreIconClickHandler.jsx';
 
-function QuizCard({ title, description, questionsCount, id }) {
+function QuizCard({ title, description, questionsCount, id, onDelete}) {
     return (
       <div key={id} className="quiz-card relative">
         <div className="absolute top-4 right-4">
-             <MoreIconClickHandler id={id} />
+             <MoreIconClickHandler id={id} onDelete={onDelete}/>
         </div>
         <h2>{title}</h2>
         <p>{description}</p>
