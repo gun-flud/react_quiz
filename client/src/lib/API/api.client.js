@@ -21,10 +21,12 @@ export default async function apiClient (path, options={}) {
     try {
         const {headers: headersOpt, ...resOptions} = options;
 
+        const hasBody = options.body !== undefined;
+
         const response = await fetch(path, {
             ...resOptions,
             headers: {
-                'Content-Type': 'application/json;charset=utf-8',
+                ...(hasBody && {'Content-Type': 'application/json;charset=utf-8'}),
                 ...headersOpt, // all headers 
             },        
         });
@@ -39,4 +41,3 @@ export default async function apiClient (path, options={}) {
         console.error('res error:', err.message || err);
     }
 }
-

@@ -58,7 +58,7 @@ function QuestionForm({ formType, label = 'Delete', type = 'text', value, onChan
             key={option.id}
             label={label} 
             type={props.typeOption || 'text'}
-            value={option.text}
+            value={option.body}
             onClick={props.options.length > 1 ? () => props.delete(option.id) : null}
             onChange={(e) => props.onChangeOption(e, option.id)}
             Checked={option.isCorrect}
