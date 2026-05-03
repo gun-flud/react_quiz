@@ -1,11 +1,14 @@
+
 import { useId, useState, useEffect} from "react";
-import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
+// import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
+import useApiManager from "@/lib/API/apiManager.js";
 import PlayCard from './PlayCard.jsx';
 import '@/assets/index.css';
 
 function PlayQuiz( { QuizId } ) {
     const [ quizData, setQuizData ] = useState(null);
-    const { quizzes, setQuizzes } = useQuizzes();
+    // const { quizzes, setQuizzes } = useQuizzes();
+    const { isError, isLoading, isValue: quizzes } = useApiManager();
 
     //можна додати лоадер 
     //можна додати даних не знайдено
@@ -111,3 +114,11 @@ export default PlayQuiz;
 // }
 
 // export default PlayQuiz;
+
+
+
+
+
+
+
+
