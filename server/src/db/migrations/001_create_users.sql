@@ -9,6 +9,10 @@ CREATE TABLE IF NOT EXISTS users (
     role VARCHAR(20) NOT NULL 
         DEFAULT 'student'
         CHECK (role IN ('student', 'teacher', 'admin')),
+    created_at          TIMESTAMPTZ  NOT NULL 
+        DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ  NOT NULL 
+        DEFAULT NOW(),
 
     PRIMARY KEY (id)
 )

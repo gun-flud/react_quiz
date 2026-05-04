@@ -1,75 +1,18 @@
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./quiz.db');
+import query, {pool} from "../../src/db/pool.js";
 
-db.serialize(() => {
-  
-  // Таблиця КВІЗІВ
-  db.run(`CREATE TABLE IF NOT EXISTS quizzes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    description TEXT
-  )`);
+const { rows } = await query(`
+    INSERT INTO users
+    (username, password_hash, email)
+    VALUES ($1, $2, $3)
+    RETURNING *`, 
+['adminUser', '123456qwertyASDFGH**!!(@*#', 'admin@quizapp.com', ])
 
-  // Таблиця ПИТАНЬ
-  db.run(`CREATE TABLE IF NOT EXISTS questions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    quiz_id INTEGER NOT NULL,
-    text TEXT NOT NULL,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
-  )`);
+const newUserId = rows[0].id;
 
-  // Таблиця ВАРІАНТІВ ВІДПОВІДЕЙ
-  db.run(`CREATE TABLE IF NOT EXISTS options (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    question_id INTEGER NOT NULL,
-    text TEXT NOT NULL,
-    is_correct BOOLEAN NOT NULL DEFAULT 0,
-    FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
-  )`);
+const creator_id = newUserId;
 
-  // Таблиця КОРИСТУВАЧІВ
-  db.run(`CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP
-  )`);
-
-  // Таблиця РЕЗУЛЬТАТІВ
-  db.run(`CREATE TABLE IF NOT EXISTS results (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    quiz_id INTEGER NOT NULL,
-    score INTEGER NOT NULL,      -- Кількість правильних відповідей
-    total INTEGER NOT NULL,      -- Загальна кількість питань
-    date TEXT DEFAULT CURRENT_TIMESTAMP, -- Дата проходження
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
-  )`);
-
-
-  db.run("DELETE FROM results"); // Спочатку видаляємо результати (бо вони зв'язані)
-  db.run("DELETE FROM options");
-  db.run("DELETE FROM questions");
-  db.run("DELETE FROM quizzes");
-  db.run("DELETE FROM users");
-  
-
-  db.run("DELETE FROM sqlite_sequence");
-
-  // тестовий юзер (щоб було на кого писати результати)
-  const insertUser = db.prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-  insertUser.run("AdminUser", "admin123"); // ID буде 1
-  insertUser.finalize();
-
-  console.log("Tables created and Test User (ID=1) added.");
-
-
-  const insertQuiz = db.prepare("INSERT INTO quizzes (title, description) VALUES (?, ?)");
-  const insertQuestion = db.prepare("INSERT INTO questions (quiz_id, text) VALUES (?, ?)");
-  const insertOption = db.prepare("INSERT INTO options (question_id, text, is_correct) VALUES (?, ?, ?)");
-  // (mock data)
-  const quizzesData = [
+const mock_quizzes = {
+    quizzes: [
         // --- ТЕСТ 1: Англійська мова (A1) ---
         {
             id: 1,
@@ -384,162 +327,114 @@ db.serialize(() => {
                 },
             ],
         },
-        // --- ТЕСТ 11: Кулінарія ---
-        {
-            id: 11,
-            title: "Тест: Основи Кулінарії",
-            description: "Базові знання про приготування їжі.",
-            questions: [
-                {
-                    text: "Який інгредієнт є основним у борщі?",
-                    options: [
-                        { text: "Капуста", id: 0, isCorrect: false },
-                        { text: "Буряк", id: 1, isCorrect: true },
-                        { text: "Морква", id: 2, isCorrect: false },
-                        { text: "Картопля", id: 3, isCorrect: false },
-                    ],
-                },
-                {
-                    text: "Як називається процес приготування їжі на гарячій сковороді з невеликою кількістю жиру?",
-                    options: [
-                        { text: "Варіння", id: 0, isCorrect: false },
-                        { text: "Тушкування", id: 1, isCorrect: false },
-                        { text: "Запікання", id: 2, isCorrect: false },
-                        { text: "Смаження", id: 3, isCorrect: true },
-                    ],
-                },
-            ],
-        },
-        // --- ТЕСТ 12: Комп'ютерні мережі ---
-        {
-            id: 12,
-            title: "Тест з Мереж (Основи)",
-            description: "Перевірка знань про моделі OSI та протоколи.",
-            questions: [
-                {
-                    text: "Скільки рівнів має модель OSI?",
-                    options: [
-                        { text: "5", id: 0, isCorrect: false },
-                        { text: "7", id: 1, isCorrect: true },
-                        { text: "4", id: 2, isCorrect: false },
-                        { text: "8", id: 3, isCorrect: false },
-                    ],
-                },
-                {
-                    text: "Який протокол відповідає за передачу веб-сторінок?",
-                    options: [
-                        { text: "FTP", id: 0, isCorrect: false },
-                        { text: "SMTP", id: 1, isCorrect: false },
-                        { text: "HTTP", id: 2, isCorrect: true },
-                        { text: "TCP", id: 3, isCorrect: false },
-                    ],
-                },
-            ],
-        },
-        // --- ТЕСТ 13: Логіка ---
-        {
-            id: 13,
-            title: "Тест на Логіку",
-            description: "Перевірка логічного мислення.",
-            questions: [
-                {
-                    text: "Продовжіть послідовність: 2, 4, 8, 16, ___",
-                    options: [
-                        { text: "24", id: 0, isCorrect: false },
-                        { text: "32", id: 1, isCorrect: true },
-                        { text: "20", id: 2, isCorrect: false },
-                        { text: "64", id: 3, isCorrect: false },
-                    ],
-                },
-                {
-                    text: "Якщо всі А є Б, а деякі Б є В, чи обов'язково деякі А є В?",
-                    options: [
-                        { text: "Так, завжди", id: 0, isCorrect: false },
-                        { text: "Ні, не обов'язково", id: 1, isCorrect: true },
-                        { text: "Тільки якщо А = Б", id: 2, isCorrect: false },
-                        { text: "Тільки якщо Б = В", id: 3, isCorrect: false },
-                    ],
-                },
-            ],
-        },
-        // --- ТЕСТ 14: Мистецтво ---
-        {
-            id: 14,
-            title: "Тест з Мистецтва",
-            description: "Знання відомих картин та художників.",
-            questions: [
-                {
-                    text: "Хто намалював картину 'Мона Ліза'?",
-                    options: [
-                        { text: "Вінсент Ван Гог", id: 0, isCorrect: false },
-                        { text: "Леонардо да Вінчі", id: 1, isCorrect: true },
-                        { text: "Пабло Пікассо", id: 2, isCorrect: false },
-                        { text: "Мікеланджело", id: 3, isCorrect: false },
-                    ],
-                },
-                {
-                    text: "В якому стилі творив Сальвадор Далі?",
-                    options: [
-                        { text: "Імпресіонізм", id: 0, isCorrect: false },
-                        { text: "Кубізм", id: 1, isCorrect: false },
-                        { text: "Сюрреалізм", id: 2, isCorrect: true },
-                        { text: "Реалізм", id: 3, isCorrect: false },
-                    ],
-                },
-            ],
-        },
-        // --- ТЕСТ 15: Фінанси ---
-        {
-            id: 15,
-            title: "Тест з Особистих Фінансів",
-            description: "Базові поняття про гроші та інвестиції.",
-            questions: [
-                {
-                    text: "Що таке 'інфляція'?",
-                    options: [
-                        { text: "Зростання вартості грошей", id: 0, isCorrect: false },
-                        { text: "Зниження купівельної спроможності грошей", id: 1, isCorrect: true },
-                        { text: "Фіксований обмінний курс", id: 2, isCorrect: false },
-                        { text: "Накопичення багатства", id: 3, isCorrect: false },
-                    ],
-                },
-                {
-                    text: "Що таке 'диверсифікація' у інвестиціях?",
-                    options: [
-                        { text: "Вкладення всіх грошей в один актив", id: 0, isCorrect: false },
-                        { text: "Розподіл інвестицій між різними активами для зниження ризику", id: 1, isCorrect: true },
-                        { text: "Швидкий продаж активів для отримання прибутку", id: 2, isCorrect: false },
-                        { text: "Інвестування тільки в іноземну валюту", id: 3, isCorrect: false },
-                    ],
-                },
-            ],
-        },
-    ];
+    ],
     // --- Секція результатів ---
+    // results: [
+    //     {
+    //         timestamp: "2026-06-06T03:06:06Z",
+    //         title: "Тест з англійської мови (A1)",
+    //         summary: 2,
+    //         answers: [[1], [2]],
+    //         questions: [
+    //             {
+    //                 text: "Як сказати 'яблуко' англійською?",
+    //                 options: [
+    //                     { text: "pear", id: 0, isCorrect: false },
+    //                     { text: "apple", id: 1, isCorrect: true },
+    //                     { text: "orange", id: 2, isCorrect: false },
+    //                     { text: "banana", id: 3, isCorrect: false },
+    //                 ],
+    //             },
+    //             {
+    //                 text: "Оберіть правильне дієслово: 'They ___ from Ukraine.'",
+    //                 options: [
+    //                     { text: "is", id: 0, isCorrect: false },
+    //                     { text: "am", id: 1, isCorrect: false },
+    //                     { text: "are", id: 2, isCorrect: true },
+    //                     { text: "be", id: 3, isCorrect: false },
+    //                 ],
+    //             },
+    //         ],
+    //     },
+    // ],
+};
+
+
+
+
+const client = await pool.connect();
+
+try {
+    await client.query('BEGIN');
+
+    for (const quiz of mock_quizzes.quizzes) {
+
+        const createdAt = new Date();
+        createdAt.setDate(createdAt.getDate() - quiz.id);
+
+        const { rows: quizRows } = await client.query(`
+        INSERT INTO quizzes 
+        (creator_id, title, description, created_at)
+        VALUES ($1, $2, $3, $4)
+        RETURNING id 
+        `, [creator_id, quiz.title, quiz.description, createdAt]);
+
+        if (quizRows.length < 1) throw Error('quiz Error');
+
+        const quiz_id = quizRows[0].id;
+        let i = 0;
+        for (const question of quiz.questions) {
+            
+            const { rows: questionRows } = await client.query(`
+            INSERT INTO questions
+            (quiz_id, question, type, position)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id 
+            `, [quiz_id, question.text, 'single', i]);
+
+            if (questionRows.length < 1) throw Error('question Error');
+
+            i++;
+
+            const question_id = questionRows[0].id;
+
+            for (const option of question.options) {
+
+
+            const { rows: optionsRows } = await client.query(`
+                INSERT INTO options
+                (question_id, body, is_correct, position)
+                VALUES ($1, $2, $3, $4)
+                RETURNING id `,
+                [question_id, option.text, option.isCorrect, option.id])
+
+                if (optionsRows.length < 1) throw Error('option Error');
+                
+            }
+            
+        
+        }
+
+    }
     
+    await client.query('COMMIT');
+    console.log('quizz created');
 
-  quizzesData.forEach((quiz) => {
-    // Вставляємо Quiz і отримуємо його ID (this.lastID)
-    insertQuiz.run(quiz.title, quiz.description, function(err) {
-      if (err) return console.error(err);
-      const quizId = this.lastID;
+} catch (error) {
+        if (client) {
+            try {
+                await client.query("ROLLBACK");
+                console.error("[ERROR] inserting error", error.message);
+            } catch (rollbackError) {
+                console.error("[ERROR] ROLLBACK error", rollbackError.message);
+            }
+        }
+} finally {
+        if (client) {
+            client.release();
+            console.log("[DONE]  ended up coonection");
+        }
 
-      quiz.questions.forEach((q) => {
-        // Вставляємо Питання
-        insertQuestion.run(quizId, q.text, function(err) {
-          if (err) return console.error(err);
-          const questionId = this.lastID;
+}
 
-          q.options.forEach((opt) => {
-            // Вставляємо Опції
-            insertOption.run(questionId, opt.text, opt.isCorrect);
-          });
-        });
-      });
-    });
-  });
-
-  console.log("Database initialized with seed data!");
-});
-
-// http://localhost:3000/quizzes
+  
