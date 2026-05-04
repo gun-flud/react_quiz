@@ -16,18 +16,18 @@ export const getById = async (req, reply) => {
 export const create = async (req, reply) => {
     const data = req.body;
     
-    reply.status(201)
-    return await homeService.createFullQuiz(data);  
+    await homeService.createFullQuiz(data);
+    reply.status(201).send({message: 'created successfully'});  
 }
 
 export const deleteById = async (req, reply) => {
     const { id } = req.params;
     await homeService.deleteById(id);
-    reply.status(200).send({message: 'deleted successfuly'});
+    reply.status(200).send({message: 'deleted successfully'});
 }
 
 export const editById = async (req, reply) => {
     const { id } = req.params;
     await homeService.editById(id, data);
-     reply.status(201).send({message: 'edited successfuly'});
+     reply.status(201).send({message: 'edited successfully'});
 }

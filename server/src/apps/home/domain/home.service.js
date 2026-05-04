@@ -12,11 +12,15 @@ export async function getAllQuizzes() {
 export async function getById(id) {
     const rows = await dataAccessModule.findById(id);
 
+    if (!rows || rows.length === 0) {
+        return null;
+    }
+
     const quiz = {
         quiz_id: rows[0].quiz_id,
         title: rows[0].title,
         description: rows[0].description,
-        visibiliti: rows[0].visibiliti,
+        visibility: rows[0].visibility,
         bg_image: rows[0].bg_image,
         questions: [],
     };
@@ -32,7 +36,7 @@ export async function getById(id) {
                 body: question.question_body,
                 type: question.type,
                 points: question.points,
-                position: question.position,
+                position: question.question_position,
                 options: [],
             });
         }

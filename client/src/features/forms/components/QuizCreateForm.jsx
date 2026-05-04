@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect, useId } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { useCreateForm } from "@/features/forms/api/useEditForm.js";
-// import { useQuizzes } from '@/quizzes_to_remove/quiz.context.jsx';
 import QuestionForm from "./QuestionForm.jsx";
 import "@/assets/index.css";
 
@@ -75,10 +74,6 @@ function QuizCreateForm() {
             ),
         );
     };
-
-    // const handleTitleChange = (e) => {
-
-    // }
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
