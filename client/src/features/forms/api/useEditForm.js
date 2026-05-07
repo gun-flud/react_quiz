@@ -4,11 +4,13 @@ import queryCache from "@/lib/API/queryCache";
 
 // GET
 export default function useEditForms (id) {
+    queryCache.invalidate('/api/home');
     const METHOD = 'PUT'
     return useMutation(`/api/home/edit/${id}`,  METHOD);
 }
 
 export  function useIdQuiz (id) {
+
     const path = `/api/home/quiz/${id}`;
     return useApiManager(path);
 }

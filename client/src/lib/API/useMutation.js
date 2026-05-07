@@ -9,16 +9,17 @@ export default function useMutation(path, METHOD) {
 
     // const mutate = async () => {
     async function mutate(data) {
-        setIsLoading(true);
+        if (!isValue) setIsLoading(true);
         setIsError(false);
 
         try {
-            const dataStr = JSON.stringify(data);
-
             const options = {
                 method: METHOD,
-                body: dataStr,
             };
+
+            if (data && METHOD !== 'GET') {
+                options.body = JSON.stringify(data);
+            }
 
             const value = await apiClient(path, options);
             setIsValue(value);
@@ -27,6 +28,7 @@ export default function useMutation(path, METHOD) {
         } catch (error) {
             setIsError(true);
             console.error("Fetch error", error.message);
+
         } finally {
             setIsLoading(false);
         }
