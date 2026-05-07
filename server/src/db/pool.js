@@ -23,7 +23,7 @@ export default async function query(sql, params = "") {
         const reply = await pool.query(sql, params);
         return reply;
     } catch (err) {
-        console.error("DB query failed:", err.message);
+        console.error("[DB_ERROR] DB query failed:", err.message);
         throw err;
     }
 }
