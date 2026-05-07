@@ -1,11 +1,32 @@
+import { useEffect } from "react";
 import { Link } from "react-router";
 import QuizList from "@/features/homepage/components/QuizList.jsx";
-import useHomeQuizzes from "@/features/homepage/api/useHomeQuizzes.js";
+import {useHomeQuizzes} from "@/features/homepage/api/useHomeQuizzes.js";
 
 import plusIcon from "@/assets/icons/plus-icon.png";
 
 function Home() {
-    const { isError, isLoading, isValue: quizzes } = useHomeQuizzes();
+    let {refetch, isError, isLoading, quizzes} = useHomeQuizzes();
+
+    useEffect(() => {
+       
+        const evtSource = new EventSource("/api/stream");
+
+        evtSource.addEventListener("CREATE_QUIZ", async (event) => {
+            try {
+                await refetch();
+                console.log("Data received:", event.data); 
+            } catch (err) {
+                console.log('stream err', err.message);
+            }
+        });
+
+        return () => {
+            evtSource.close();
+            console.log("SSE connection closed securely.");
+        };
+        
+    }, [refetch]);
 
     if (isLoading) {
         return <div className="text-center mt-10">
