@@ -1,5 +1,6 @@
 import { dataAccessModule } from "../data-access/home.repository.js";
 import { pool } from "../../../db/pool.js";
+import { emmitHandler } from "../../events/events.controller.js";
 
 //  export const data = await dataAccessModule.findAll();
 
@@ -87,6 +88,9 @@ export async function createFullQuiz(data) {
 
         await client.query('COMMIT');
         console.log('[CREATED] success!');
+
+        emmitHandler.emit("SSE", "CREATE_QUIZ", "10");
+
 
     } catch (error) {
         try {
