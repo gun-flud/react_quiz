@@ -14,7 +14,7 @@ export const pool = new Pool({
 });
 
 pool.on("error", (err) => {
-    console.error("Unexpected DB pool error:", err.message);
+    console.error("[DB_ERROR]  Unexpected DB pool error:", err.message);
     process.exit(1);
 });
 

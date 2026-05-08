@@ -1,13 +1,13 @@
 
 import { useState, useEffect } from "react";
 
-import getQuizzes from "../api/getQuizzes.js";
+import useQuizById from "../api/useQuizzes.js"
 import PlayCard from './PlayCard.jsx';
 import '@/assets/index.css';
 
 function PlayQuiz( { QuizId } ) {
     const [ quizData, setQuizData ] = useState(null);
-    const { isError, isLoading, isValue: quiz } = getQuizzes(QuizId);
+    const { isError, isLoading, isValue: quiz } = useQuizById(QuizId);
 
     //можна додати лоадер 
     //можна додати даних не знайдено
