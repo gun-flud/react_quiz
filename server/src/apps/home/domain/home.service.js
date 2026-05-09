@@ -1,6 +1,6 @@
 import { dataAccessModule } from "../data-access/home.repository.js";
 import { pool } from "../../../db/pool.js";
-import { emmitHandler } from "../../events/events.controller.js";
+import { eventBus } from "../../../libraries/events/event.bus.js";
 
 //  export const data = await dataAccessModule.findAll();
 
@@ -89,7 +89,7 @@ export async function createFullQuiz(data) {
         await client.query('COMMIT');
         console.log('[CREATED] success!');
 
-        emmitHandler.emit("SSE", "CREATE_QUIZ", "10");
+        eventBus.publish("SSE", "CREATE_QUIZ", createdQuiz.id);
 
 
     } catch (error) {
@@ -98,7 +98,7 @@ export async function createFullQuiz(data) {
         } catch (rollbackError) {
             console.error('RollbackError: ', rollbackError.message);
         }
-        console.error('transaction rolled back:', error.message);
+        console.error('[ROLLBACK] transaction rolled back:', error.message);
         throw error;
     } finally {
         client.release();

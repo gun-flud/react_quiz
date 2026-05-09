@@ -1,19 +1,18 @@
 import { pipeline } from "node:stream/promises";
-import { EventEmitter, on } from "node:events";
+import { on } from "node:events";
 import { Readable } from "node:stream";
 
-export const emmitHandler = new EventEmitter();
-emmitHandler.setMaxListeners(0);
+import { eventBus, ACTIONS, EVENTS } from "./event.bus.js";
 
-async function* streamGenetrator() {
-    const events = on(emmitHandler, "SSE");
+async function* streamGenerator() {
+    const events = on(eventBus.getEventEmitter(), EVENTS.SSE);
 
     for await (const [event_type, data] of events) {
         yield `event: ${event_type}\ndata: ${data}\n\n`;
     }
 }
 
-export default function evetHandler(fastify, components, done) {
+export default function eventHandler(fastify, components, done) {
     fastify.get("/", async (req, reply) => {
         reply.hijack();
         
@@ -30,7 +29,7 @@ export default function evetHandler(fastify, components, done) {
             console.log('Ping stopped, on page close');
         });
 
-        const eventsStream = Readable.from(streamGenetrator());
+        const eventsStream = Readable.from(streamGenerator());
 
         try {
             await pipeline(eventsStream, reply.raw);
@@ -43,6 +42,3 @@ export default function evetHandler(fastify, components, done) {
 
     done();
 }
-//  emmitHandler.emit("SSE", "CREATE_QUIZ", "10");
-// emmitHandler.emit("SSE", "EDIT_QUIZ", "10");
-// emmitHandler.emit("SSE", "DELETE_QUIZ", "10");
