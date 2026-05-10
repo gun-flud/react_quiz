@@ -89,7 +89,7 @@ export async function createFullQuiz(data) {
         await client.query('COMMIT');
         console.log('[CREATED] success!');
 
-        eventBus.publish("SSE", "CREATE_QUIZ", createdQuiz.id);
+        eventBus.publish("SSE", "CREATE_QUIZ", String(createdQuiz.id));
 
 
     } catch (error) {
