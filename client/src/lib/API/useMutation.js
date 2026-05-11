@@ -29,6 +29,7 @@ export default function useMutation(path, METHOD) {
             setIsError(true);
             console.error("Fetch error", error.message);
 
+            throw error;
         } finally {
             setIsLoading(false);
         }
