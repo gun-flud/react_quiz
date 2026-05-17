@@ -1,4 +1,4 @@
-import query from "../../../db/pool";
+import query from "../../../db/pool.js";
 export class DataAccessModule {
     static async registerUser(email, password, username, confirmToken, expires) {
         const { rows } = await query(
