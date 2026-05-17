@@ -2,13 +2,19 @@ import useApiManager from "@/lib/API/apiManager";
 import useMutation from "@/lib/API/useMutation";
 import queryCache from "@/lib/API/queryCache";
 
-// GET
+// PUT 
 export default function useEditForms (id) {
-    const METHOD = 'PUT'
-    return useMutation(`/api/home/edit/${id}`,  METHOD);
+    const METHOD = 'PUT';
+    const editedValue = useMutation(`/api/home/edit/${id}`,  METHOD);
+
+    const {isValue, isError} = editedValue;
+    if (isValue && !isError) queryCache.invalidate('/api/home');
+
+    return editedValue;
 }
 
 export  function useIdQuiz (id) {
+
     const path = `/api/home/quiz/${id}`;
     return useApiManager(path);
 }

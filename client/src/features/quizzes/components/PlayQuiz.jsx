@@ -1,27 +1,27 @@
 
 import { useState, useEffect } from "react";
 
-import useApiManager from "@/lib/API/apiManager.js";
+import useQuizById from "../api/useQuizzes.js"
 import PlayCard from './PlayCard.jsx';
 import '@/assets/index.css';
 
 function PlayQuiz( { QuizId } ) {
     const [ quizData, setQuizData ] = useState(null);
-    const { isError, isLoading, isValue: quizzes } = useApiManager();
+    const { isError, isLoading, isValue: quiz } = useQuizById(QuizId);
 
     //можна додати лоадер 
     //можна додати даних не знайдено
 
     useEffect(() => {
-        if (QuizId && quizzes.length > 0) {
-            const foundQuiz = quizzes.find(quiz => quiz.id === parseInt(QuizId));
-            if(foundQuiz) {
-                setQuizData(foundQuiz);
-            } else {
-                console.error("Quiz not found");
-            }
-        }
-    }, [QuizId, quizzes])
+        if (quiz) {
+           setQuizData(quiz);
+        } else {
+            console.warn(
+                    `Quiz with id ${QuizId} not found`,
+                );
+        };
+
+    }, [isError, quiz, QuizId]);
 
     // сюди додати рендер перевірок чи є дані чи ні
     if (!quizData) {

@@ -21,6 +21,9 @@ export default defineConfig(({ mode }) => {
     },
     // cors handling
     server: {
+      port: 3000,        
+      strictPort: true,  
+      open: true,
       proxy: {
         '/api': {
           target: env.VITE_API_URL,

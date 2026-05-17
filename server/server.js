@@ -3,6 +3,7 @@ import cors from "@fastify/cors"
 
 import { env } from './src/config/env.js'
 import homeRoutes from './src/apps/home/entry-points/home.routes.js'
+import eventHandler from './src/libraries/events/events.controller.js'
 
 import query from './src/db/pool.js';
 
@@ -45,15 +46,8 @@ const getSchema = {
     }
 };
 
-fastify.get("/", { schema: getSchema }, (req, res) => {
-    return { message: 'hello world' }
-    // res.status(200).send("lakhsdklkjajsd");
-});
-
-fastify.get("/use", (req, res) => {
-    // res.status(200).send("succes");
-    return { message: 'hello world' } 
-});
+//streams practice 
+fastify.register(eventHandler, {prefix: '/stream'});
 
 // home
 fastify.register(homeRoutes, {prefix: '/home'});
