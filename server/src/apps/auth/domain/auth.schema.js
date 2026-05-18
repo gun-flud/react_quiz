@@ -11,7 +11,7 @@ export default function inputValidation(data) {
     const result = schema.safeParse(data);
 
     if (!result.success) {
-        const errorsMessages = resul.error.errors.map(err => err.message);
+        const errorsMessages = result.error.errors.map(err => err.message);
 
         return {
             isValid: false,

@@ -9,8 +9,8 @@ export const register = async (req, reply) => {
         const validation = inputValidation(data);
 
         if (!validation.isValid) {
-            return reply.status(400).send({ 
-                error: "Validation failed", 
+            return reply.status(400).send({
+                error: "Validation failed",
                 details: validation.errors,
             });
         }
@@ -19,17 +19,30 @@ export const register = async (req, reply) => {
         //registering user
         const IsRegisteredHash = await authService.register(validData);
 
-        reply
-            .status(201)
-            .send(IsRegisteredHash); //email verification
-
+        return reply.status(201).send(IsRegisteredHash); //email verification
     } catch (error) {
-        
         console.error("[REGISTER ERROR]", error);
-        reply.status(500).send({ error: "Internal Server Error" });
+        return reply.status(500).send({ error: "Internal Server Error" });
     }
 };
 
+export const verify = async (req, reply) => {
+    const { token } = req.query;
+
+    try {
+        await authService.verify(token);
+        return reply
+            .status(201)
+            .send({ message: "User verified successfully" });
+    } catch (error) {
+        if (error.statusCode === 400) {
+            return reply.status(400).send({ error: error.message });
+        }
+
+        console.error("[VERIFY ERROR]", error);
+        return reply.status(500).send({ error: "Internal Server Error" });
+    }
+};
 // export const logIn = async (req, reply) => {
 //     reply.status(200);
 

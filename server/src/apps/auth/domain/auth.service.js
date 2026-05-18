@@ -29,3 +29,16 @@ export async function register(data) {
 
     return rows;
 }
+
+export async function verify (token) {
+    const rows = await DataAccessModule.verify(token);
+
+    if (rows.length === 0) {
+        const error = new Error("Invalid token");
+        error.statusCode = 400;
+        throw error
+    }
+
+    return true;
+}
+
