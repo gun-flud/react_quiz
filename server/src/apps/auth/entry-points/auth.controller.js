@@ -21,6 +21,12 @@ export const register = async (req, reply) => {
 
         return reply.status(201).send(IsRegisteredHash); //email verification
     } catch (error) {
+        if (error.code === "23505") {
+            return reply
+                .status(409)
+                .send({ message: "user with this email already exists" });
+        }
+
         console.error("[REGISTER ERROR]", error);
         return reply.status(500).send({ error: "Internal Server Error" });
     }
