@@ -1,12 +1,17 @@
 import { z } from "zod";
 
-const schema = z.object({
+const registerSchema = z.object({
         email: z.string().email({ message: "email address is not valid" }),
         password: z.string().min(8, { message: "password must be at least 8 characters long" }),
-        username: z.string().min(3).max(20).optional(),
+        username: z.string().min(3).max(20),
 });
 
-export default function inputValidation(data) {
+const logInSchema = z.object({
+        email: z.string().email({ message: "email address is not valid" }),
+        password: z.string().min(8, { message: "password must be at least 8 characters long" }),
+});
+
+function inputValidation(data, schema) {
 
     const result = schema.safeParse(data);
 
@@ -24,3 +29,6 @@ export default function inputValidation(data) {
         data: result.data 
     }  
 }
+
+export const validateRegister = data => inputValidation(data, registerSchema);
+export const validateLogIn = data => inputValidation(data, logInSchema);

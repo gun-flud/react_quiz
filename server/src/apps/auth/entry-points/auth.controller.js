@@ -1,12 +1,12 @@
 import * as authService from "../domain/auth.service.js";
 
-import inputValidation from "../domain/auth.schema.js";
+import { validateLogIn, validateRegister } from "../domain/auth.schema.js";
 
 export const register = async (req, reply) => {
     try {
         //data validation handling
         const data = req.body;
-        const validation = inputValidation(data);
+        const validation = validateRegister(data);
 
         if (!validation.isValid) {
             return reply.status(400).send({
@@ -52,7 +52,7 @@ export const verify = async (req, reply) => {
 
 export const logIn = async (req, reply) => {
     const data = req.body;
-    const validation = inputValidation(data);
+    const validation = validateLogIn(data);
 
     if (!validation.isValid) {
         return reply.status(400).send({
