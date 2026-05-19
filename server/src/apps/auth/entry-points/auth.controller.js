@@ -91,3 +91,14 @@ export const logIn = async (req, reply) => {
     }
 };
 
+export const getUser = async (req, reply) => {
+    try {
+        await req.jwtVerify(); 
+    
+        return reply.status(200).send({ user: req.user });
+
+    } catch (error) {
+        
+        return reply.status(401).send({ error: "Unauthorized" });
+    }
+};
