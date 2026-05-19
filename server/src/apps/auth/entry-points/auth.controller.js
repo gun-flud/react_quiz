@@ -65,7 +65,20 @@ export const logIn = async (req, reply) => {
     try {
         const { id, message } = await authService.logIn(validData);
 
-        return reply.status(200).send({ id, message });
+        const token = await reply.jwtSign({
+            userId: id,
+            role: "user",
+        });
+
+        reply.setCookie("token", token, {
+            domain: "localhost",
+            path: "/",
+            // secure: true, // HTTPS only
+            httpOnly: true,
+            sameSite: "strict",
+        });
+
+        return reply.status(200).send({ message: "Login successful" });
     } catch (error) {
         if (error.statusCode === 401) {
             return reply
@@ -77,3 +90,4 @@ export const logIn = async (req, reply) => {
         return reply.status(500).send({ error: "Internal Server Error" });
     }
 };
+
