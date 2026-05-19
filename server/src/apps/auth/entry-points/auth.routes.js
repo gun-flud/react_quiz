@@ -5,7 +5,7 @@ export default function authRoutes (fastify, components, done) {
 
     fastify.get("/verify", authController.verify);
     
-    // fastify.post("/login", authController.logIn);
+    fastify.post("/login", authController.logIn);
 
     done();
 }

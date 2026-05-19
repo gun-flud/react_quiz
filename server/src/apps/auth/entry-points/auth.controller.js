@@ -43,7 +43,31 @@ export const verify = async (req, reply) => {
         return reply.status(500).send({ error: "Internal Server Error" });
     }
 };
-// export const logIn = async (req, reply) => {
-//     reply.status(200);
 
-// };
+export const logIn = async (req, reply) => {
+    const data = req.body;
+    const validation = inputValidation(data);
+
+    if (!validation.isValid) {
+        return reply.status(400).send({
+            error: "Validation failed",
+            details: validation.errors,
+        });
+    }
+    const validData = validation.data;
+
+    try {
+        const { id, message } = await authService.logIn(validData);
+
+        return reply.status(200).send({ id, message });
+    } catch (error) {
+        if (error.statusCode === 401) {
+            return reply
+                .status(error.statusCode)
+                .send({ error: error.message });
+        }
+
+        console.error("[LOGIN ERROR]", error);
+        return reply.status(500).send({ error: "Internal Server Error" });
+    }
+};

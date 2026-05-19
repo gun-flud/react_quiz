@@ -32,4 +32,15 @@ export class DataAccessModule {
 
         return rows;
     }
+
+    static async logIn (email) {
+        const { rows } = await query(
+            `SELECT id, password_hash FROM users
+            WHERE email = $1 AND is_verified = TRUE;
+            `, 
+            [email]
+        );
+
+        return rows;
+    }
 }
