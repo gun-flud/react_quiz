@@ -35,7 +35,7 @@ fastify.register(cors, {
 
 fastify.register(fastifyCookie);
 
-fastify.register(fastifyJwt, {
+fastify.register(fastifyJWT, {
     secret: process.env.JWT_SECRET,
     cookie: {
         cookieName: "token",
