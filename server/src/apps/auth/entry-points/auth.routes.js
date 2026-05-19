@@ -9,5 +9,7 @@ export default function authRoutes (fastify, components, done) {
 
     fastify.get("/user", authController.getUser);
 
+    fastify.post("/logout", authController.logOut);
+
     done();
 }

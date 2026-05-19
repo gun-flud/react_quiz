@@ -102,3 +102,10 @@ export const getUser = async (req, reply) => {
         return reply.status(401).send({ error: "Unauthorized" });
     }
 };
+
+export const logOut = async (req, reply) => {
+    reply.clearCookie("token", { path: "/" });
+    
+    return reply.status(200).send({ message: "Logged out successfully" });
+};
+
