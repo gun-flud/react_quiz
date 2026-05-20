@@ -35,6 +35,8 @@ const envSchema = z.object({
     PGADMIN_DEFAULT_EMAIL: z.coerce.string(),
     PGADMIN_DEFAULT_PASSWORD: z.coerce.string(),
     PGADMIN_PORT: z.coerce.number(),
+    JWT_ACCESS_TOKEN_SECRET: z.coerce.string(),
+    JWT_REFRESH_TOKEN_SECRET: z.coerce.string(),
 });
 const result = envSchema.safeParse(process.env);
 

@@ -6,6 +6,7 @@ export default async function apiClient (path, options={}) {
 
         const response = await fetch(path, {
             ...resOptions,
+            credentials: "include",
             headers: {
                 ...(hasBody && {'Content-Type': 'application/json;charset=utf-8'}),
                 ...headersOpt, // all headers 
@@ -14,6 +15,10 @@ export default async function apiClient (path, options={}) {
 
         if (!response.ok) {
             throw new Error("Response status:", response.status);
+        }
+
+        if (response.status === 401) {
+             console.warn("User is unauthorized. Redirecting to login...");
         }
 
         const result = await response.json();

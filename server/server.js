@@ -38,10 +38,6 @@ fastify.register(fastifyCookie);
 
 fastify.register(fastifyJWT, {
     secret: env.JWT_SECRET,
-    cookie: {
-        cookieName: "token",
-        signed: false,
-    },
 });
 
 //listening for server
