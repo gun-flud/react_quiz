@@ -30,13 +30,14 @@ const fastify = Fastify({
 //CORS usage libriary
 fastify.register(cors, {
     origin: "http://localhost:3000",
+    credentials: true,
     methods: ["GET", "PUT", "POST", "DELETE"],
 });
 
 fastify.register(fastifyCookie);
 
 fastify.register(fastifyJWT, {
-    secret: process.env.JWT_SECRET,
+    secret: env.JWT_SECRET,
     cookie: {
         cookieName: "token",
         signed: false,
