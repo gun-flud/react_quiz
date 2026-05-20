@@ -3,6 +3,7 @@ import cors from "@fastify/cors"
 
 import { env } from './src/config/env.js'
 import homeRoutes from './src/apps/home/entry-points/home.routes.js'
+import authRoutes from "./src/apps/auth/entry-points/auth.routes.js";
 import eventHandler from './src/libraries/events/events.controller.js'
 
 import query from './src/db/pool.js';
@@ -52,9 +53,12 @@ fastify.register(eventHandler, {prefix: '/stream'});
 // home
 fastify.register(homeRoutes, {prefix: '/home'});
 
-try {
+// auth 
+fastify.register(authRoutes, {prefix: '/auth'});
 
+try {
     await fastify.listen(port);
+    
 } catch (err) {
     fastify.log.fatal(err);
     process.exit(1);
