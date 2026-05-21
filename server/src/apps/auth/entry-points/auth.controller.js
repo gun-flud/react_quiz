@@ -1,7 +1,5 @@
 import * as authService from "../domain/auth.service.js";
 
-import jwt from "jsonwebtoken";
-
 import { validateLogIn, validateRegister } from "../domain/auth.schema.js";
 
 export const register = async (req, reply) => {
@@ -105,7 +103,7 @@ export const logIn = async (req, reply) => {
 
         return reply
             .status(200)
-            .send({ message: "Login successful", accessToken: accessToken });
+            .send({ message, accessToken });
     } catch (error) {
         if (error.statusCode === 401) {
             return reply
