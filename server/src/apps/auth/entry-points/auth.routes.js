@@ -7,5 +7,9 @@ export default function authRoutes (fastify, components, done) {
     
     fastify.post("/login", authController.logIn);
 
+    fastify.get("/user", authController.getUser);
+
+    fastify.post("/logout", authController.logOut);
+
     done();
 }

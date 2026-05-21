@@ -65,7 +65,24 @@ export const logIn = async (req, reply) => {
     try {
         const { id, message } = await authService.logIn(validData);
 
-        return reply.status(200).send({ id, message });
+        const token = await reply.jwtSign(
+            {
+                userId: id,
+                role: "user",
+            },
+            { expiresIn: "7d" },
+        );
+
+        reply.setCookie("token", token, {
+            domain: "localhost",
+            path: "/",
+            // secure: true, // HTTPS only
+            httpOnly: true,
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60,
+        });
+
+        return reply.status(200).send({ message: "Login successful" });
     } catch (error) {
         if (error.statusCode === 401) {
             return reply
@@ -76,4 +93,20 @@ export const logIn = async (req, reply) => {
         console.error("[LOGIN ERROR]", error);
         return reply.status(500).send({ error: "Internal Server Error" });
     }
+};
+
+export const getUser = async (req, reply) => {
+    try {
+        await req.jwtVerify();
+
+        return reply.status(200).send({ user: req.user });
+    } catch (error) {
+        return reply.status(401).send({ error: "Unauthorized" });
+    }
+};
+
+export const logOut = async (req, reply) => {
+    reply.clearCookie("token", { path: "/" });
+
+    return reply.status(200).send({ message: "Logged out successfully" });
 };
