@@ -38,7 +38,7 @@ export default async function AuthProxy(path, options = {}) {
                 isRefreshing = true;
 
                 try {
-                    const refreshPath = "api/auth/refresh";
+                    const refreshPath = "/api/auth/refresh";
                     const refreshData = await apiClient(refreshPath, { method: "POST" });
                     
                     setAccessToken(refreshData.accessToken);

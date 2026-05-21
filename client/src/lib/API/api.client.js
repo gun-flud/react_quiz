@@ -30,6 +30,7 @@
 export class ApiError extends Error {
     constructor (code, error) {
         super(code);
+        this.status = code;
         this.erData = error;
     }
 }
@@ -54,7 +55,7 @@ export default async function apiClient (path, options={}) {
         if (!response.ok) {
             const errorVal = await response.json().catch(() => ({}));
 
-            throw ApiError(response.status, errorVal);
+            throw new ApiError(response.status, errorVal);
         }
 
         const result = await response.json();
