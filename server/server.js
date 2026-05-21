@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import fastifyCookie from "@fastify/cookie";
 import fastifyJWT from "@fastify/jwt";
+import jwt from "jsonwebtoken";
 
 import { env } from "./src/config/env.js";
 import homeRoutes from "./src/apps/home/entry-points/home.routes.js";
@@ -37,11 +38,7 @@ fastify.register(cors, {
 fastify.register(fastifyCookie);
 
 fastify.register(fastifyJWT, {
-    secret: env.JWT_SECRET,
-    cookie: {
-        cookieName: "token",
-        signed: false,
-    },
+    secret: env.JWT_ACCESS_TOKEN_SECRET,
 });
 
 //listening for server

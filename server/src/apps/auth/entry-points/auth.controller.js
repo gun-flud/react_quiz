@@ -50,6 +50,16 @@ export const verify = async (req, reply) => {
     }
 };
 
+export const getUser = async (req, reply) => {
+    try {
+        await req.jwtVerify();
+
+        return reply.status(200).send({ user: req.user });
+    } catch (error) {
+        return reply.status(401).send({ error: "Unauthorized" });
+    }
+};
+
 export const logIn = async (req, reply) => {
     const data = req.body;
     const validation = validateLogIn(data);
@@ -65,24 +75,35 @@ export const logIn = async (req, reply) => {
     try {
         const { id, message } = await authService.logIn(validData);
 
-        const token = await reply.jwtSign(
+        const accessToken = await reply.jwtSign(
             {
                 userId: id,
-                role: "user",
+                role: "student", //will be changed to not be mock
             },
-            { expiresIn: "7d" },
+            { expiresIn: "15m" },
         );
 
-        reply.setCookie("token", token, {
+        const refreshToken = jwt.sign(
+            {
+                userId: id,
+                type: "refresh",
+            },
+            env.JWT_REFRESH_TOKEN_SECRET,
+            { expiresIn: "10d" },
+        );
+
+        reply.setCookie("refreshToken", refreshToken, {
             domain: "localhost",
             path: "/",
             // secure: true, // HTTPS only
             httpOnly: true,
             sameSite: "strict",
-            maxAge: 7 * 24 * 60 * 60,
+            maxAge: 10 * 24 * 60 * 60,
         });
 
-        return reply.status(200).send({ message: "Login successful" });
+        return reply
+            .status(200)
+            .send({ message, accessToken });
     } catch (error) {
         if (error.statusCode === 401) {
             return reply
@@ -95,18 +116,41 @@ export const logIn = async (req, reply) => {
     }
 };
 
-export const getUser = async (req, reply) => {
+export const refresh = async (req, reply) => {
     try {
-        await req.jwtVerify();
+        const refreshToken = req.cookies.refreshToken;
+        if (!refreshToken) {
+            return reply.status(401).send({ error: "No refresh token found" });
+        }
 
-        return reply.status(200).send({ user: req.user });
+            const decodedToken = jwt.verify(
+                refreshToken,
+                env.JWT_REFRESH_TOKEN_SECRET,
+            );
+
+            const accessToken = await reply.jwtSign(
+                {
+                    userId: decodedToken.userId,
+                    role: "student",
+                },
+                { expiresIn: "15m" },
+            );
+
+            return reply
+                .status(200)
+                .send({
+                    message: "Login successful",
+                    accessToken: accessToken,
+                });
     } catch (error) {
-        return reply.status(401).send({ error: "Unauthorized" });
+        return reply
+            .status(403)
+            .send({ error: "Invalid refresh token, try to login" });
     }
 };
 
 export const logOut = async (req, reply) => {
-    reply.clearCookie("token", { path: "/" });
+    reply.clearCookie("refreshToken", { path: "/" });
 
     return reply.status(200).send({ message: "Logged out successfully" });
 };
