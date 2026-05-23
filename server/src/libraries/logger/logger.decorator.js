@@ -1,7 +1,7 @@
 import { logger } from "./logger.instance.js";
 import { performance } from "node:perf_hooks";
 
-export default function loggerWrapper(logLevel) {
+export default function loggerWrapper(logLevel="INFO") {
     return (func) => {
         return async (...args) => {
             const started = performance.now();
@@ -41,7 +41,7 @@ export default function loggerWrapper(logLevel) {
                         event: "EXECUTION FAILED",
                         name: func.name,
                         ExecutionTimeMs,
-                        error: error.message,
+                        error: error,
                     },
                     `Execution failed ${func.name}`,
                 );
