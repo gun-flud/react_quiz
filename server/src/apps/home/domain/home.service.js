@@ -2,13 +2,24 @@ import { dataAccessModule } from "../data-access/home.repository.js";
 import { pool } from "../../../db/pool.js";
 import { eventBus } from "../../../libraries/events/event.bus.js";
 
-//  export const data = await dataAccessModule.findAll();
+import loggerWrapper from "../../../libraries/logger/logger.decorator.js";
+
+ export const data = await dataAccessModule.findAll();
 
 export async function getAllQuizzes() {
     const rows = await dataAccessModule.findAll();
 
     return rows;
 }
+
+// async function rawGetAllQuizzes() {
+//     const rows = await dataAccessModule.findAll();
+
+//     return rows;
+// }
+
+// export const getAllQuizzes = loggerWrapper('INFO')(rawGetAllQuizzes);
+
 
 export async function getById(id) {
     const rows = await dataAccessModule.findById(id);

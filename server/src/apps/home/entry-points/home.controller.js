@@ -1,11 +1,22 @@
 import * as homeService from "../domain/home.service.js";
 
+import loggerWrapper from "../../../libraries/logger/logger.decorator.js";
+
 export const getHome = async (req, reply) => {
     reply.status(200);
 
     const getAllQuizzes = await homeService.getAllQuizzes();
     return getAllQuizzes;
 };
+
+// const rawGetHome = async (req, reply) => {
+//     reply.status(200);
+
+//     const getAllQuizzes = await homeService.getAllQuizzes();
+//     return getAllQuizzes;
+// };
+
+// export const getHome = loggerWrapper('INFO')(rawGetHome);
 
 export const getById = async (req, reply) => {
     const { id } = req.params;
