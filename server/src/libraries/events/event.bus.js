@@ -25,18 +25,11 @@ class EventBus {
 
     publish(event, action, data) {
         logger.info({ event, action, data: data }, "[EVENT FIRED]");
-        // console.log(`[EVENT FIRED] Action: ${action} Data:${data}`);
 
         try {
             this.emitHandler.emit(event, action, data);
 
-            //this.emitHandler.emit(action, data);
         } catch (error) {
-            // console.error(
-            //     `[EVENT BUS ERROR] A listener crashed synchronously on action:
-            //     ${action}
-            //     ${error.message}`
-            // );
             logger.error(
                 { action, err: error },
                 "[EVENT BUS ERROR] A listener crashed synchronously on action:",

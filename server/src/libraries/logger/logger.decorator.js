@@ -1,6 +1,10 @@
 import { logger } from "../../config/logger/logger.config.js";
 import { performance } from "node:perf_hooks";
 
+// if (String(logLevel).toUpperCase() !== "INFO") {
+//     logger.level = logLevel;
+// }
+
 export default function loggerWrapper(logLevel="INFO") {
     return (func) => {
         return async (...args) => {
@@ -22,7 +26,7 @@ export default function loggerWrapper(logLevel="INFO") {
 
                 const ExecutionTimeMs = Number((performance.now() - started).toFixed(2));
 
-                if (logLevel !== "ERROR") {
+                if (String(logLevel).toUpperCase() !== "ERROR") {
                     logger.info(
                         {
                             event: "EXECUTION SUCCESS",

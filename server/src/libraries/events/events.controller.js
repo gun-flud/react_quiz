@@ -11,7 +11,6 @@ async function* streamGenerator(signal) {
         for await (const [event_type, data] of events) {
             yield `event: ${event_type}\ndata: ${data}\n\n`;
         }
-
     } catch (err) {
         if (err.name !== "AbortError") {
             throw err;
@@ -22,12 +21,12 @@ async function* streamGenerator(signal) {
 export default function eventHandler(fastify, components, done) {
     fastify.get("/", async (req, reply) => {
         reply.hijack();
-        
+
         reply.raw.writeHead(200, {
             "Content-Type": "text/event-stream",
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
-        })
+        });
 
         const abortController = new AbortController();
         const signal = abortController.signal;
