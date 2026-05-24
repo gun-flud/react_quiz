@@ -16,3 +16,5 @@ export const loggerConfig = isDev
         //   level: "info",
           timestamp: pino.stdTimeFunctions.isoTime,
       };
+
+export const logger = pino(loggerConfig);

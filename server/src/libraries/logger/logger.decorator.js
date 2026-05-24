@@ -1,4 +1,4 @@
-import { logger } from "./logger.instance.js";
+import { logger } from "../../config/logger/logger.config.js";
 import { performance } from "node:perf_hooks";
 
 export default function loggerWrapper(logLevel="INFO") {
