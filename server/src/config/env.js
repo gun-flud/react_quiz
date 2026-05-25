@@ -7,22 +7,6 @@ config({
 
 import * as z from "zod";
 
-// const envVariables = [
-//     'PORT',
-// ]
-
-// for (envVar of envVariables) {
-
-//     if(!process.env[envVar]) {
-//         console.error('problem with environment variable: ', envVar);
-//         process.exit(1);
-//     }
-// }
-
-// export default {
-
-// }
-
 const envSchema = z.object({
     PORT: z.coerce.number(),
     DB_HOST: z.coerce.string(),
