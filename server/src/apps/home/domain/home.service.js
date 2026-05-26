@@ -11,14 +11,6 @@ async function getAllQuizzes() {
     return rows;
 }
 
-// async function rawGetAllQuizzes() {
-//     const rows = await dataAccessModule.findAll();
-
-//     return rows;
-// }
-
-// export const getAllQuizzes = loggerWrapper('INFO')(rawGetAllQuizzes);
-
 async function getById(id) {
     const rows = await dataAccessModule.findById(id);
 

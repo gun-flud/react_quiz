@@ -17,6 +17,7 @@ export const pool = new Pool({
 
 pool.on("error", (err) => {
     logger.error({ err }, "[DB_ERROR]  Unexpected DB pool error:");
+    process.exit(1);
 });
 
 export default async function query(sql, params = []) {

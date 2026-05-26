@@ -1,4 +1,4 @@
-import * as authService from "../domain/auth.service.js";
+import { authService } from "../domain/auth.service.js";
 
 import { validateLogIn, validateRegister } from "../domain/auth.schema.js";
 

@@ -21,6 +21,8 @@ const envSchema = z.object({
     PGADMIN_PORT: z.coerce.number(),
     JWT_ACCESS_TOKEN_SECRET: z.coerce.string(),
     JWT_REFRESH_TOKEN_SECRET: z.coerce.string(),
+
+    LOGGER_MODE: z.enum(['info', 'debug', 'error', 'INFO', 'DEBUG', 'ERROR']).default('info'),
 });
 const result = envSchema.safeParse(process.env);
 

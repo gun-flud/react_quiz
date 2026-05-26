@@ -7,14 +7,15 @@ export default function loggerWrapper(logLevel="INFO") {
             const started = performance.now();
 
             if (logLevel !== "ERROR") {
-                logger[logLevel.toLowerCase()](
+                logger.info(
                     {
                         event: "EXECUTION STARTED",
                         name: func.name,
-                        args,
                     },
                     `Execution started ${func.name}`,
                 );
+
+                logger.debug({ args }, `[DEBUG DATA] inputs for ${func.name}`);
             }
             try {
                 const result = await func(...args);
@@ -22,15 +23,16 @@ export default function loggerWrapper(logLevel="INFO") {
                 const ExecutionTimeMs = Number((performance.now() - started).toFixed(2));
 
                 if (logLevel !== "ERROR") {
-                    logger[logLevel.toLowerCase()](
+                    logger.info(
                         {
                             event: "EXECUTION SUCCESS",
                             name: func.name,
                             ExecutionTimeMs,
-                            result,
                         },
                         `Execution succed ${func.name}`,
                     );
+
+                    logger.debug({ result }, `[DEBUG DATA] Output for ${func.name}`);
                 }
                 return result;
             } catch (error) {
@@ -41,20 +43,15 @@ export default function loggerWrapper(logLevel="INFO") {
                         event: "EXECUTION FAILED",
                         name: func.name,
                         ExecutionTimeMs,
-                        error: error,
+                        err: error,
                     },
                     `Execution failed ${func.name}`,
                 );
+
+                logger.debug({ args }, `[DEBUG DATA] Output for ${func.name}`);
 
                 throw error;
             }
         };
     };
 }
-
-// wrapper("INFO")(someFn)("testing 123");
-// function someFn(args) {
-//     // throw new Error('error tester');
-//     let ten = 10;
-//     return ten;
-// }
