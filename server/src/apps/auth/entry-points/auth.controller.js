@@ -27,7 +27,7 @@ export const register = async (req, reply) => {
                 .send({ message: "user with this email already exists" });
         }
 
-        console.error("[REGISTER ERROR]", error);
+        req.log.error({ err: error }, "[REGISTER ERROR]");
         return reply.status(500).send({ error: "Internal Server Error" });
     }
 };
@@ -45,7 +45,7 @@ export const verify = async (req, reply) => {
             return reply.status(400).send({ error: error.message });
         }
 
-        console.error("[VERIFY ERROR]", error);
+        req.log.error({ err: error }, "[VERIFY ERROR]");
         return reply.status(500).send({ error: "Internal Server Error" });
     }
 };
@@ -111,7 +111,7 @@ export const logIn = async (req, reply) => {
                 .send({ error: error.message });
         }
 
-        console.error("[LOGIN ERROR]", error);
+        req.log.error({ err: error }, "[LOGIN ERROR]");
         return reply.status(500).send({ error: "Internal Server Error" });
     }
 };

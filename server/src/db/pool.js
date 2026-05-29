@@ -1,5 +1,7 @@
 import { Pool } from "pg";
+
 import { env } from "../config/env.js";
+import { logger } from "../config/logger/logger.config.js";
 
 export const pool = new Pool({
     host: env.DB_HOST,
@@ -14,16 +16,15 @@ export const pool = new Pool({
 });
 
 pool.on("error", (err) => {
-    console.error("[DB_ERROR]  Unexpected DB pool error:", err.message);
-    process.exit(1);
+    logger.error({ err }, "[DB_ERROR]  Unexpected DB pool error:");
 });
 
-export default async function query(sql, params = "") {
+export default async function query(sql, params = []) {
     try {
         const reply = await pool.query(sql, params);
         return reply;
     } catch (err) {
-        console.error("[DB_ERROR] DB query failed:", err.message);
+        logger.error({ err }, "[DB_ERROR] DB query failed:");
         throw err;
     }
 }

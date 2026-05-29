@@ -2,15 +2,24 @@ import { dataAccessModule } from "../data-access/home.repository.js";
 import { pool } from "../../../db/pool.js";
 import { eventBus } from "../../../libraries/events/event.bus.js";
 
-//  export const data = await dataAccessModule.findAll();
+import loggerWrapper from "../../../libraries/logger/logger.decorator.js";
+import { logger } from "../../../config/logger/logger.config.js";
 
-export async function getAllQuizzes() {
+async function getAllQuizzes() {
     const rows = await dataAccessModule.findAll();
 
     return rows;
 }
 
-export async function getById(id) {
+// async function rawGetAllQuizzes() {
+//     const rows = await dataAccessModule.findAll();
+
+//     return rows;
+// }
+
+// export const getAllQuizzes = loggerWrapper('INFO')(rawGetAllQuizzes);
+
+async function getById(id) {
     const rows = await dataAccessModule.findById(id);
 
     if (!rows || rows.length === 0) {
@@ -53,21 +62,18 @@ export async function getById(id) {
 
     quiz.questions = [...questions.values()];
 
-    console.log(quiz);
-
     return quiz;
 }
 
-export async function createFullQuiz(data) {
+async function createFullQuiz(data) {
     const { questions, ...quizData } = data;
-    console.log(data);
 
     const client = await pool.connect();
     try {
         await client.query("BEGIN");
 
         const createdQuiz = await dataAccessModule.createQuiz(client, quizData);
-        console.log('[CREATED] quiz with id:', createdQuiz.id);
+        logger.debug({ quizId: createdQuiz.id }, "[CREATED] quiz with id:");
 
         for (const question of questions) {
             const questionData = {
@@ -75,42 +81,57 @@ export async function createFullQuiz(data) {
                 ...question,
             };
 
-            const createdQuestion = await dataAccessModule.createQuestion(client, questionData);
-            console.log('[CREATED] question with id:', createdQuestion.id);
+            const createdQuestion = await dataAccessModule.createQuestion(
+                client,
+                questionData,
+            );
+            logger.debug(
+                { questionId: createdQuestion.id },
+                "[CREATED] question with id:",
+            );
 
-            const optionData = [
-                ...question.options
-            ];
+            const optionData = [...question.options];
 
-            const createdOptions = await dataAccessModule.createOption(client, optionData, createdQuestion.id);
-            console.log('[CREATED] options:', createdOptions.length);
+            const createdOptions = await dataAccessModule.createOption(
+                client,
+                optionData,
+                createdQuestion.id,
+            );
+            logger.debug(
+                { optionsLength: createdOptions.length },
+                "[CREATED] options:",
+            );
         }
 
-        await client.query('COMMIT');
-        console.log('[CREATED] success!');
+        await client.query("COMMIT");
+        logger.debug("[CREATED] success!");
 
         eventBus.publish("SSE", "CREATE_QUIZ", String(createdQuiz.id));
-
-
     } catch (error) {
         try {
             await client.query("ROLLBACK");
         } catch (rollbackError) {
-            console.error('RollbackError: ', rollbackError.message);
+            logger.error({ err: rollbackError }, "RollbackError:");
         }
-        console.error('[ROLLBACK] transaction rolled back:', error.message);
+        logger.error({ err: error }, "[ROLLBACK] transaction rolled back:");
         throw error;
     } finally {
         client.release();
     }
 }
 
-export async function deleteById(id) {
+async function deleteById(id) {
     const rows = await dataAccessModule.deleteById(id);
 }
 
-export async function editById(id, data) {
-    // if 
-
+async function editById(id, data) {
     const rows = await dataAccessModule.editById(id, data);
 }
+
+export const homeService = {
+    editById: loggerWrapper("INFO")(editById),
+    deleteById: loggerWrapper("INFO")(deleteById),
+    createFullQuiz: loggerWrapper("INFO")(createFullQuiz),
+    getById: loggerWrapper("INFO")(getById),
+    getAllQuizzes: loggerWrapper("INFO")(getAllQuizzes),
+};
