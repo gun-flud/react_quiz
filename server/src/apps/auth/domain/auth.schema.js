@@ -3,7 +3,7 @@ import { z } from "zod";
 const registerSchema = z.object({
         email: z.string().email({ message: "email address is not valid" }),
         password: z.string().min(8, { message: "password must be at least 8 characters long" }),
-        username: z.string().min(3).max(20),
+        username: z.string().min(4).max(20),
 });
 
 const logInSchema = z.object({
