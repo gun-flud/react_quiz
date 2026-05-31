@@ -1,19 +1,18 @@
 export const getUser = {
     schema: {
-        body: {
+        headers: {
             type: "object",
-                required: ["accessToken"],
+                required: ["Authorization"],
                 properties: {
-                    accessToken: { type: "string" },
+                    Authorization: { type: "string" },
                 },
-                additionalProperties: false,
         },
         response: {
             200: {
                 type: 'object',
                 required: ['user'],
                 properties: {
-                    user: { type: 'string'},
+                    user: { type: 'object'},
                 }
             }
         }

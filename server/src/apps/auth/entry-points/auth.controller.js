@@ -1,3 +1,5 @@
+import { env } from "../../../config/env.js";
+import jwt from "jsonwebtoken";
 import { authService } from "../domain/auth.service.js";
 
 import { validateLogIn, validateRegister } from "../domain/auth.schema.js";
