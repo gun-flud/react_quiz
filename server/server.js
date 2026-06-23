@@ -8,24 +8,14 @@ import { env } from "./src/config/env.js";
 import homeRoutes from "./src/apps/home/entry-points/home.routes.js";
 import authRoutes from "./src/apps/auth/entry-points/auth.routes.js";
 import eventHandler from "./src/libraries/events/events.controller.js";
-
+import { loggerConfig } from "./src/config/logger/logger.config.js";
 import query from "./src/db/pool.js";
 
 const PORT = env.PORT;
 
 // logging libriary
-const ENV = env.NODE_ENV;
 const fastify = Fastify({
-    logger: ENV
-        ? true
-        : {
-              transport: {
-                  target: "pino-pretty",
-                  options: {
-                      translateTime: "HH:MM:ss Z",
-                  },
-              },
-          },
+    logger: loggerConfig,
 });
 
 //CORS usage libriary

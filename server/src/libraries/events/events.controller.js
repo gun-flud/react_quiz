@@ -11,7 +11,6 @@ async function* streamGenerator(signal) {
         for await (const [event_type, data] of events) {
             yield `event: ${event_type}\ndata: ${data}\n\n`;
         }
-
     } catch (err) {
         if (err.name !== "AbortError") {
             throw err;
@@ -23,9 +22,11 @@ export default function eventHandler(fastify, components, done) {
     fastify.get("/", async (req, reply) => {
         reply.hijack();
 
-        reply.raw.setHeader("Content-Type", "text/event-stream");
-        reply.raw.setHeader("Cache-Control", "no-cache");
-        reply.raw.setHeader("Connection", "keep-alive");
+        reply.raw.writeHead(200, {
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+        });
 
         const abortController = new AbortController();
         const signal = abortController.signal;
@@ -38,7 +39,7 @@ export default function eventHandler(fastify, components, done) {
             abortController.abort();
 
             clearInterval(ping);
-            console.log("Ping stopped, on page close");
+            req.log.info("Ping stopped, on page close");
         });
 
         const eventsStream = Readable.from(streamGenerator(signal));
@@ -47,7 +48,7 @@ export default function eventHandler(fastify, components, done) {
             await pipeline(eventsStream, reply.raw);
         } catch (err) {
             if (err.code !== "ERR_STREAM_PREMATURE_CLOSE") {
-                console.error("SSE stream error: ", err.message);
+                req.log.error({ err }, "SSE stream error: ");
             }
         }
     });

@@ -2,8 +2,9 @@ import crypto from "node:crypto";
 import bcrypt from "bcrypt";
 
 import { DataAccessModule } from "../data-access/auth.repository.js";
+import loggerWrapper from "../../../libraries/logger/logger.decorator.js";
 
-export async function register(data) {
+async function register(data) {
     const { email, password, username } = data;
 
     const hashingRounds = 12;
@@ -28,7 +29,7 @@ export async function register(data) {
     return rows;
 }
 
-export async function verify(token) {
+async function verify(token) {
     const rows = await DataAccessModule.verify(token);
 
     if (rows.length === 0) {
@@ -40,7 +41,7 @@ export async function verify(token) {
     return true;
 }
 
-export async function logIn(data) {
+async function logIn(data) {
     const { email, password } = data;
 
     const assertValid = inCase => {
@@ -62,4 +63,10 @@ export async function logIn(data) {
     assertValid(!isValid);
     
     return { id, message: "Login successful" };
+}
+
+export const authService = {
+    register: loggerWrapper('INFO')(register),
+    verify: loggerWrapper('INFO')(verify),
+    logIn: loggerWrapper('INFO')(logIn),
 }

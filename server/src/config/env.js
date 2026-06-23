@@ -7,22 +7,6 @@ config({
 
 import * as z from "zod";
 
-// const envVariables = [
-//     'PORT',
-// ]
-
-// for (envVar of envVariables) {
-
-//     if(!process.env[envVar]) {
-//         console.error('problem with environment variable: ', envVar);
-//         process.exit(1);
-//     }
-// }
-
-// export default {
-
-// }
-
 const envSchema = z.object({
     PORT: z.coerce.number(),
     DB_HOST: z.coerce.string(),
@@ -37,6 +21,8 @@ const envSchema = z.object({
     PGADMIN_PORT: z.coerce.number(),
     JWT_ACCESS_TOKEN_SECRET: z.coerce.string(),
     JWT_REFRESH_TOKEN_SECRET: z.coerce.string(),
+
+    LOGGER_MODE: z.enum(['info', 'debug', 'error', 'INFO', 'DEBUG', 'ERROR']).default('info'),
 });
 const result = envSchema.safeParse(process.env);
 
