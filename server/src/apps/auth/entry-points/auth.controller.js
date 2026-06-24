@@ -131,7 +131,7 @@ export const refresh = async (req, reply) => {
             const accessToken = await reply.jwtSign(
                 {
                     userId: decodedToken.userId,
-                    role: "student",
+                    role: "student",//will be changed
                 },
                 { expiresIn: "15m" },
             );
