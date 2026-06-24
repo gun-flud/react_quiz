@@ -10,6 +10,7 @@ import authRoutes from "./src/apps/auth/entry-points/auth.routes.js";
 import eventHandler from "./src/libraries/events/events.controller.js";
 import { loggerConfig } from "./src/config/logger/logger.config.js";
 import query from "./src/db/pool.js";
+import protectedRoutes from "./src/hooks/authenticate.js";
 
 const PORT = env.PORT;
 
@@ -53,6 +54,8 @@ fastify.register(eventHandler, { prefix: "/stream" });
 
 // home
 fastify.register(homeRoutes, { prefix: "/home" });
+fastify.register(protectedRoutes, { prefix: "/api" });
+
 
 // auth
 fastify.register(authRoutes, { prefix: "/auth" });

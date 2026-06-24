@@ -1,9 +1,9 @@
 import * as authController from "./auth.controller.js";
 
 export default function authRoutes (fastify, components, done) {
-    fastify.post("/register", authController.register);
+    fastify.post("/register", authController.register); //registration
 
-    fastify.get("/verify", authController.verify);
+    fastify.get("/verify", authController.verify); //email verification during registration
     
     fastify.post("/login", authController.logIn);
 
