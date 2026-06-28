@@ -1,3 +1,5 @@
+import { env } from "../../../config/env.js";
+import jwt from "jsonwebtoken";
 import { authService } from "../domain/auth.service.js";
 
 import { validateLogIn, validateRegister } from "../domain/auth.schema.js";
@@ -54,7 +56,7 @@ export const getUser = async (req, reply) => {
     try {
         await req.jwtVerify();
 
-        return reply.status(200).send({ user: req.user });
+        return reply.status(200).send({ user: req.user }); //? i am assigning accesstoken, but here is requested user
     } catch (error) {
         return reply.status(401).send({ error: "Unauthorized" });
     }
